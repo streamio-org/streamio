@@ -1,6 +1,8 @@
 <div align="center">
 
-# 🎬 Streamio
+<img src="public/icons/site-icon.png" alt="Streamio logo" width="120" height="120">
+
+# Streamio
 
 **Your movies. Your shows. Your server.**
 
@@ -38,23 +40,23 @@ content. What you upload is what your server serves.
 > [Architecture → Providers](docs/architecture.md#layering-routes--services--platformhandler--core--providers)
 > for how that's wired, in case you ever want to add another one.
 
-## ✨ Highlights
+## Highlights
 
 | | |
 |---|---|
-| 🎞️ **Your library, streamed properly** | Uploads are transcoded to adaptive HLS and served with resume-from-anywhere watch history. |
-| 👤 **Real accounts** | Email/password + Google & Discord OAuth, JWT sessions, watchlists, favorites, ratings. |
-| 🧑‍🤝‍🧑 **Social** | Follow other users, share shows/episodes/clips, react with emoji. |
-| 📺 **Watch parties** | Create a room, share a 6-character code, and watch in sync with friends — play/pause/seek/episode changes mirror live over WebSocket. |
-| 📡 **Chromecast, done right** | A custom CAF receiver handles demuxed HLS audio/video correctly, where the default Cast receiver falls over. |
-| 🔁 **Multi-server sync** | Run more than one Streamio instance? Watchlist, favorites, ratings, history and follows merge across them, matched by account email. |
-| 🔌 **Power-aware self-hosting** | Optional idle auto-shutdown with a companion host-side power controller, so your box only runs while someone's actually watching. |
-| ♻️ **Updates that don't hurt** | Migrations apply automatically at boot, builds report their own version, and native clients get a version gate — with optional one-click self-update from GitHub releases. |
+| **Your library, streamed properly** | Uploads are transcoded to adaptive HLS and served with resume-from-anywhere watch history. |
+| **Real accounts** | Email/password + Google & Discord OAuth, JWT sessions, watchlists, favorites, ratings. |
+| **Social** | Follow other users, share shows/episodes/clips, react with emoji. |
+| **Watch parties** | Create a room, share a 6-character code, and watch in sync with friends — play/pause/seek/episode changes mirror live over WebSocket. |
+| **Chromecast, done right** | A custom CAF receiver handles demuxed HLS audio/video correctly, where the default Cast receiver falls over. |
+| **Multi-server sync** | Run more than one Streamio instance? Watchlist, favorites, ratings, history and follows merge across them, matched by account email. |
+| **Power-aware self-hosting** | Optional idle auto-shutdown with a companion host-side power controller, so your box only runs while someone's actually watching. |
+| **Updates that don't hurt** | Migrations apply automatically at boot, builds report their own version, and native clients get a version gate — with optional one-click self-update from GitHub releases. |
 
 See [**Features**](docs/features.md) for the deep dive on sync, casting, watch parties, and
 auto-shutdown.
 
-## 🚀 Quick Start
+## Quick Start
 
 ```bash
 git clone https://github.com/streamio-org/streamio-website.git
@@ -69,7 +71,7 @@ Open **http://localhost:8080**, create an account, and add your first title from
 Full walkthrough — including putting a reverse proxy in front for remote access — in
 [**Getting Started**](docs/getting-started.md).
 
-## 📖 Documentation
+## Documentation
 
 Everything beyond this quick tour lives in [`docs/`](docs/README.md):
 
@@ -92,7 +94,7 @@ Three more pieces run **on the host itself**, not in Docker, each with its own s
 | [`power-controller/`](power-controller/README.md) | Powers the host off after idle time |
 | [`login-checker/`](login-checker/README.md) | Presence beacon so `power-controller` doesn't shut down under an active user |
 
-## 🧱 Tech Stack
+## Tech Stack
 
 - **Backend:** Node.js, Express, TypeScript
 - **Database:** PostgreSQL (self-migrating at boot) + Redis (caching, rate limiting)
@@ -101,12 +103,12 @@ Three more pieces run **on the host itself**, not in Docker, each with its own s
 - **Media:** Server-side transcoding to adaptive HLS
 - **Auth:** JWT access/refresh tokens, Google & Discord OAuth, TV device-code pairing
 
-## 🤝 Contributing
+## Contributing
 
 Issues and pull requests are welcome. If you're planning something larger than a small fix,
 open an issue first so we can talk through the approach before you invest the time.
 
-## 📄 License
+## License
 
 Copyright © 2026 Streamio.
 
