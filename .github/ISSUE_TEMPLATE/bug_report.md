@@ -6,6 +6,13 @@ labels: bug
 assignees: ''
 ---
 
+## Checklist
+
+- [ ] Ho aggiornato all'ultima versione
+- [ ] Ho riavviato (container/server/client) prima di segnalare
+- [ ] Ho controllato che non sia già un issue esistente
+- [ ] Ho cliccato tutti i check senza leggere
+
 ## Describe the bug
 
 A clear and concise description of what's wrong.
