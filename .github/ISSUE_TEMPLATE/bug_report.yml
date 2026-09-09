@@ -1,0 +1,103 @@
+name: Bug report
+description: Report something that isn't working as expected
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: Ho aggiornato all'ultima versione
+        - label: Ho riavviato (container/server/client) prima di segnalare
+        - label: Ho controllato che non sia già un issue esistente
+        - label: Ho cliccato tutti i check senza leggere
+    validations:
+      required: false
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what's wrong.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: To Reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What you expected to happen instead.
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Screenshots / logs
+      description: Screenshots or relevant log output (server logs, browser console).
+    validations:
+      required: false
+
+  - type: input
+    id: version
+    attributes:
+      label: Streamio version
+      description: From `GET /api/version` or the footer.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: deployment
+    attributes:
+      label: Deployment
+      options:
+        - Docker Compose
+        - Other
+    validations:
+      required: false
+
+  - type: dropdown
+    id: client
+    attributes:
+      label: Client
+      options:
+        - Browser
+        - Android app
+        - Chromecast
+        - Other
+    validations:
+      required: false
+
+  - type: input
+    id: os
+    attributes:
+      label: OS (server host)
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Reverse proxy setup, custom env vars, whether this started after an update, etc.
+    validations:
+      required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        If this bug is a security vulnerability, please **do not** file it here — see [SECURITY.md](https://github.com/streamio-org/streamio/blob/main/SECURITY.md) instead.
