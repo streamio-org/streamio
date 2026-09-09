@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Streamio - Watch</title>
+    <link rel="shortcut icon" href="/icons/site-icon.png" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1.6.16/dist/hls.min.js"></script>
+    <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
+    <link rel="stylesheet" href="/styles/watch.css" />
+  </head>
+  <body>
+    <nav id="navbar">
+      <a href="/" class="brand">STREAMIO</a>
+      <a href="/details" class="back-btn" id="backBtn">← Back</a>
+    </nav>
+
+    <!-- PLAYER -->
+    <div class="player-section">
+      <div class="player-container" id="playerContainer">
+        <div class="player-placeholder" id="playerPlaceholder">
+          <div class="spinner"></div>
+          <p>Loading...</p>
+        </div>
+        <video id="videoPlayer" playsinline></video>
+
+        <!-- Feedback for actions that have no visible control of their own
+             (keyboard seeks, volume, speed): without it a key press on a
+             fullscreen video looks like nothing happened. -->
+        <div class="player-osd" id="playerOsd">
+          <span class="player-osd-icon" id="playerOsdIcon"></span>
+          <span class="player-osd-text" id="playerOsdText"></span>
+        </div>
+
+        <div class="player-controls" id="playerControls">
+          <div class="next-ep-prompt" id="nextEpPrompt">
+            <span id="nextEpLabel">Next episode</span>
+            <button id="nextEpBtn"><svg class="icon-svg" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg> Play next</button>
+            <button id="nextEpCancel">✕</button>
+          </div>
+          <div class="skip-segment-prompt" id="skipSegmentPrompt">
+            <button id="skipSegmentBtn">Skip Intro</button>
+          </div>
+          <!-- Progress -->
+          <div class="progress-container">
+            <div class="progress-bar" id="progressBar">
+              <div class="progress-buffered" id="progressBuffered"></div>
+              <div class="progress-fill" id="progressFill">
+                <span class="progress-handle"></span>
+              </div>
+              <div class="progress-tooltip" id="progressTooltip">0:00</div>
+            </div>
+            <div class="time-display">
+              <span id="currentTime">0:00</span> /
+              <span id="duration">0:00</span>
+            </div>
+          </div>
+          <!-- Bottom row -->
+          <div class="controls-row">
+            <div class="controls-left">
+              <button class="pbtn" id="playBtn" title="Play/Pause">
+                <svg viewBox="0 0 24 24">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+              </button>
+              <div class="volume-control">
+                <button class="pbtn" id="volumeBtn" title="Mute">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M3 9v6h4l5 5V4L7 9H3z"></path>
+                  </svg>
+                </button>
+                <input
+                  type="range"
+                  id="volumeSlider"
+                  class="volume-slider"
+                  min="0"
+                  max="100"
+                  value="100"
+                />
+              </div>
+            </div>
+            <div class="controls-right">
+              <button class="pbtn" id="shareBtn" title="Share">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="18" cy="5" r="3"></circle>
+                  <circle cx="6" cy="12" r="3"></circle>
+                  <circle cx="18" cy="19" r="3"></circle>
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+              </button>
+              <button class="pbtn" id="roomBtn" title="Watch Party">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"
+                  ></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </button>
+              <button
+                class="pbtn"
+                id="castBtn"
+                title="Cast to TV"
+                style="display: none"
+              >
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M2 16.1A5 5 0 0 1 5.9 20M2 12.05A9 9 0 0 1 9.95 20M2 8V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6"
+                  ></path>
+                  <line x1="2" y1="20" x2="2.01" y2="20"></line>
+                </svg>
+              </button>
+              <button class="pbtn" id="pipBtn" title="Picture in Picture">
+                <svg viewBox="0 0 24 24">
+                  <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                  <rect
+                    x="12"
+                    y="12"
+                    width="8"
+                    height="6"
+                    rx="1"
+                    fill="currentColor"
+                  ></rect>
+                </svg>
+              </button>
+              <button class="pbtn" id="theaterBtn" title="Theater mode (T)">
+                <svg viewBox="0 0 24 24">
+                  <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+                </svg>
+              </button>
+              <button class="pbtn" id="fullscreenBtn" title="Fullscreen (F)">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"
+                  ></path>
+                </svg>
+              </button>
+              <!-- Everything below is used less often than the controls above,
+                   so it's grouped behind one "More" button instead of each
+                   getting its own always-visible icon — that's what was
+                   pushing buttons off-screen on narrower players. -->
+              <div class="more-menu">
+                <button class="pbtn" id="moreBtn" title="More options">
+                  <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="5" r="1.5" fill="currentColor" stroke="none"></circle>
+                    <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"></circle>
+                    <circle cx="12" cy="19" r="1.5" fill="currentColor" stroke="none"></circle>
+                  </svg>
+                </button>
+                <div class="dropdown more-dropdown" id="moreDropdown">
+                  <div class="more-section">
+                    <div class="more-section-title">Quality</div>
+                    <div class="more-section-list" id="qualityDropdown"></div>
+                  </div>
+                  <div class="more-section" id="subtitleBtn" style="display: none">
+                    <div class="more-section-title">Subtitles</div>
+                    <div class="more-section-list" id="subtitleDropdown"></div>
+                  </div>
+                  <div class="more-section">
+                    <div class="more-section-title">Speed</div>
+                    <!-- Chips, not rows: eight speeds as full-width buttons
+                         push everything else in this menu below the fold. -->
+                    <div class="more-section-list speed-row" id="speedDropdown"></div>
+                  </div>
+                  <div class="more-section">
+                    <div class="more-section-title">Download</div>
+                    <div class="more-section-list" id="downloadDropdown">
+                      <button class="dropdown-btn" onclick="downloadVideo()">
+                        Download MP4
+                      </button>
+                    </div>
+                  </div>
+                  <div class="more-section">
+                    <button class="dropdown-btn" id="helpBtn">Keyboard Shortcuts</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROOM PANEL (watch party) -->
+    <div class="room-panel" id="roomPanel">
+      <div class="room-panel-header">
+        <span>Watch Party</span>
+        <button class="room-panel-close" id="roomPanelClose">✕</button>
+      </div>
+      <div class="room-panel-body" id="roomPanelBody"></div>
+    </div>
+    <div class="room-toast" id="roomToast"></div>
+
+    <!-- CAST PANEL (remote control for the Chromecast session) -->
+    <div class="cast-panel" id="castPanel">
+      <div class="cast-panel-header">
+        <span id="castDeviceName">Casting</span>
+        <button class="room-panel-close" id="castPanelClose">✕</button>
+      </div>
+      <div class="cast-panel-body">
+        <div class="cast-now">
+          <img id="castNowPoster" alt="" />
+          <div class="cast-now-text">
+            <div class="cast-now-title" id="castNowTitle"></div>
+            <div class="cast-now-sub" id="castNowSub"></div>
+          </div>
+        </div>
+
+        <div class="cast-seek">
+          <div class="cast-bar" id="castBar"><div id="castBarFill"></div></div>
+          <div class="cast-times">
+            <span id="castElapsed">0:00</span>
+            <span id="castDuration">0:00</span>
+          </div>
+        </div>
+
+        <div class="cast-row">
+          <button class="cast-ctl" id="castPrevBtn" title="Previous episode"><svg class="icon-svg" viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg></button>
+          <button class="cast-ctl" id="castBack10Btn" title="Back 10 seconds"><svg class="icon-svg" viewBox="0 0 24 24"><polygon points="11 19 2 12 11 5 11 19"/><polygon points="22 19 13 12 22 5 22 19"/></svg></button>
+          <button class="cast-ctl cast-ctl-main" id="castPlayBtn" title="Play / pause"><svg class="icon-svg" viewBox="0 0 24 24"><line x1="6" y1="4" x2="6" y2="20"/><line x1="18" y1="4" x2="18" y2="20"/></svg></button>
+          <button class="cast-ctl" id="castFwd10Btn" title="Forward 10 seconds"><svg class="icon-svg" viewBox="0 0 24 24"><polygon points="13 19 22 12 13 5 13 19"/><polygon points="2 19 11 12 2 5 2 19"/></svg></button>
+          <button class="cast-ctl" id="castNextBtn" title="Next episode"><svg class="icon-svg" viewBox="0 0 24 24"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg></button>
+        </div>
+
+        <!-- Shown only while the receiver reports an active Skip Intro/
+             Recap/Credits/Preview segment (STATE.skipSegment). -->
+        <button class="room-btn" id="castSkipSegmentBtn" hidden>Skip</button>
+
+        <div class="cast-row cast-volume-row">
+          <button class="cast-ctl" id="castMuteBtn" title="Mute"><svg class="icon-svg" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
+          <input type="range" id="castVolume" min="0" max="100" value="100" />
+        </div>
+
+        <label class="cast-toggle">
+          <input type="checkbox" id="castAutoplayNext" checked />
+          Autoplay next episode
+        </label>
+
+        <select class="cast-select" id="castEpisodeSelect"></select>
+        <select class="cast-select" id="castSubtitleSelect"></select>
+        <!-- Hidden until the receiver reports audio tracks: they live inside
+             the HLS manifest and not every device/stream lets CAF enumerate
+             them, so an always-visible picker would often be empty. -->
+        <select class="cast-select" id="castAudioSelect" hidden></select>
+
+        <button class="room-btn danger" id="castDisconnectBtn">Stop casting</button>
+      </div>
+    </div>
+
+    <!-- DOWNLOAD TOAST -->
+    <div class="download-toast" id="downloadToast">
+      <div class="download-toast-title">
+        <span>Downloading...</span>
+        <button class="toast-close" onclick="closeDownloadToast()">✕</button>
+      </div>
+      <div class="download-bar">
+        <div class="download-bar-fill" id="downloadBarFill"></div>
+      </div>
+      <div class="download-status" id="downloadStatus">0%</div>
+    </div>
+
+    <!-- SHORTCUTS MODAL -->
+    <div
+      class="modal-overlay"
+      id="modalOverlay"
+      onclick="closeShortcuts()"
+    ></div>
+    <div class="shortcuts-modal" id="shortcutsModal">
+      <h3>
+        Keyboard Shortcuts
+        <button class="shortcuts-close" onclick="closeShortcuts()">✕</button>
+      </h3>
+      <!-- Rendered from PLAYER_SHORTCUTS in watch.js: the hand-written list
+           this replaced had drifted from what the keys actually did. -->
+      <div class="shortcuts-body" id="shortcutsBody"></div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content-area">
+      <div class="content-header" id="contentHeader">
+        <h1 class="content-title" id="contentTitle">Loading...</h1>
+        <div class="content-subtitle" id="contentSubtitle" hidden></div>
+        <div class="content-badges" id="contentBadges"></div>
+        <p class="content-overview" id="contentOverview" hidden></p>
+        <div class="content-links" id="contentLinks" hidden></div>
+      </div>
+      <div class="meta-strip" id="contentMeta"></div>
+      <div id="errorMsg"></div>
+
+      <!-- Episode detail for whichever episode is selected: the same payload
+           the grid below is built from, shown in full rather than as a label. -->
+      <div class="now-playing" id="nowPlaying" hidden>
+        <img class="now-playing-thumb" id="nowPlayingThumb" alt="" hidden />
+        <div class="now-playing-body">
+          <div class="now-playing-label" id="nowPlayingLabel"></div>
+          <div class="now-playing-title" id="nowPlayingTitle"></div>
+          <div class="now-playing-badges" id="nowPlayingBadges"></div>
+          <p class="now-playing-overview" id="nowPlayingOverview"></p>
+        </div>
+      </div>
+
+      <div class="section" id="episodesSection" style="display: none">
+        <div class="section-title">Episodes</div>
+
+        <!-- Navigation for long runs. A 1000-episode show is unusable as one
+             flat list, so the grid shows one season/block at a time, can be
+             filtered by number or title, and can drop to a dense number grid. -->
+        <div class="episode-nav" id="episodeNav" hidden>
+          <div class="episode-seasons" id="episodeSeasons"></div>
+          <div class="episode-tools">
+            <input
+              type="search"
+              id="episodeFilter"
+              class="episode-filter"
+              placeholder="Cerca episodio…"
+              autocomplete="off"
+              aria-label="Filtra episodi per numero o titolo"
+            />
+            <button type="button" class="episode-density" id="episodeDensity"></button>
+          </div>
+        </div>
+
+        <div class="btn-grid" id="episodesGrid"></div>
+        <p class="episode-empty" id="episodeEmpty" hidden>Nessun episodio corrisponde.</p>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Servers</div>
+        <div class="btn-grid" id="serversGrid">
+          <p style="color: var(--muted); font-size: 0.88rem">
+            Select an episode to see available servers
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script src="/scripts/watch.js" type="module"></script>
+  </body>
+</html>

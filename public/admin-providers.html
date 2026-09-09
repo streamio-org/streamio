@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manage Providers - Streamio</title>
+  <link rel="shortcut icon" href="/icons/site-icon.png" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/account.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="brand">STREAMIO</a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/catalog">Catalog</a></li>
+      <li><a href="/search">Search</a></li>
+      <li><a href="/providers">Providers</a></li>
+      <li><a href="/rooms">Rooms</a></li>
+      <li><a href="/account">Account</a></li>
+      <li><a href="#" id="logoutLink" style="color:var(--red);">Sign Out</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-body">
+    <div class="section-head">
+      <div>
+        <div class="section-title">Manage Providers</div>
+        <div class="section-sub">
+          Enable or disable individual content sources and clear their cached responses.
+          <a href="/account">← Back to Account</a>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;flex-shrink:0;">
+        <a class="btn btn-secondary btn-sm" href="/admin/local-provider">My Library</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">My Library</div>
+      <div class="section-sub" style="margin-bottom:12px;">
+        The <strong>local</strong> provider serves content from this server itself. Upload your own
+        movies and shows, with metadata filled in from a TMDB id, and they appear alongside every
+        other source.
+      </div>
+      <div class="form-actions">
+        <a class="btn btn-secondary btn-sm" href="/admin/local-provider">Manage My Library</a>
+      </div>
+    </div>
+
+    <div id="providersContent">
+      <div class="empty">
+        <div class="spinner" style="margin:0 auto 16px;"></div>
+        <div style="color:var(--muted2);font-size:0.85rem;">Loading providers…</div>
+      </div>
+    </div>
+  </div><!-- /page-body -->
+
+  <!-- TOAST -->
+  <div id="toast"><span class="toast-dot"></span><span id="toastMsg"></span></div>
+
+  <script src="/scripts/admin-providers.js" type="module"></script>
+</body>
+</html>

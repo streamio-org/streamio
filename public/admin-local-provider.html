@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Library - Streamio</title>
+  <link rel="shortcut icon" href="/icons/site-icon.png" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/account.css" />
+  <link rel="stylesheet" href="/styles/admin-local-provider.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="brand">STREAMIO</a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/catalog">Catalog</a></li>
+      <li><a href="/search">Search</a></li>
+      <li><a href="/providers">Providers</a></li>
+      <li><a href="/rooms">Rooms</a></li>
+      <li><a href="/account">Account</a></li>
+      <li><a href="#" id="logoutLink" style="color:var(--red);">Sign Out</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-body">
+    <div class="section-head">
+      <div>
+        <div class="section-title">My Library</div>
+        <div class="section-sub">
+          Your own movies and shows, uploaded here and played through the <strong>local</strong> provider.
+          <a href="/admin/providers">← Manage Providers</a>
+        </div>
+      </div>
+      <div class="lib-head-actions">
+        <button class="btn btn-secondary btn-sm" id="addMovieBtn">+ Add Movie</button>
+        <button class="btn btn-secondary btn-sm" id="addShowBtn">+ Add Show</button>
+      </div>
+    </div>
+
+    <div id="libStats" class="lib-stats" hidden></div>
+
+    <div id="titlesContent">
+      <div class="empty">
+        <div class="spinner" style="margin:0 auto 16px;"></div>
+        <div style="color:var(--muted2);font-size:0.85rem;">Loading library…</div>
+      </div>
+    </div>
+  </div><!-- /page-body -->
+
+  <!-- ADD TITLE MODAL -->
+  <div class="modal-backdrop" id="titleModal">
+    <div class="modal">
+      <div class="modal-title" id="titleModalTitle">Add Movie</div>
+      <div class="modal-desc">Give a TMDB id to fill everything in automatically, or just type a title.</div>
+      <div class="form-grid full" style="gap:14px;">
+        <div class="field">
+          <label class="field-label">TMDB ID</label>
+          <input class="field-input" id="titleTmdbInput" type="number" min="1" placeholder="e.g. 603" />
+          <span class="field-hint" id="titleTmdbHint">Fills in title, overview, poster and genres.</span>
+        </div>
+        <div class="field">
+          <label class="field-label">Title</label>
+          <input class="field-input" id="titleNameInput" type="text" placeholder="Required if no TMDB id" />
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="cancelTitleBtn">Cancel</button>
+        <button class="btn btn-primary" id="saveTitleBtn">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETAIL MODAL -->
+  <div class="modal-backdrop" id="detailModal">
+    <div class="modal modal-lg">
+      <div id="detailContent">
+        <div class="empty"><div class="spinner" style="margin:0 auto;"></div></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-danger" id="deleteTitleBtn">Delete</button>
+        <button class="btn btn-primary" id="closeDetailBtn">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD SEASON MODAL -->
+  <div class="modal-backdrop" id="seasonModal">
+    <div class="modal">
+      <div class="modal-title">Add Season</div>
+      <div class="modal-desc">For a show you're filling in by hand.</div>
+      <div class="form-grid full" style="gap:14px;">
+        <div class="field">
+          <label class="field-label">Season Number</label>
+          <input class="field-input" id="seasonNumberInput" type="number" min="0" />
+        </div>
+        <div class="field">
+          <label class="field-label">Name</label>
+          <input class="field-input" id="seasonNameInput" type="text" placeholder="Optional" />
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="cancelSeasonBtn">Cancel</button>
+        <button class="btn btn-primary" id="saveSeasonBtn">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD EPISODE MODAL -->
+  <div class="modal-backdrop" id="episodeModal">
+    <div class="modal">
+      <div class="modal-title">Add Episode</div>
+      <div class="modal-desc">The video file is uploaded afterwards, from the episode's row.</div>
+      <div class="form-grid full" style="gap:14px;">
+        <div class="field">
+          <label class="field-label">Episode Number</label>
+          <input class="field-input" id="episodeNumberInput" type="number" min="1" />
+        </div>
+        <div class="field">
+          <label class="field-label">Title</label>
+          <input class="field-input" id="episodeTitleInput" type="text" placeholder="Optional" />
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="cancelEpisodeBtn">Cancel</button>
+        <button class="btn btn-primary" id="saveEpisodeBtn">Add</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast"><span class="toast-dot"></span><span id="toastMsg"></span></div>
+
+  <script src="/scripts/admin-local-provider.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Streamio - Details</title>
+  <link rel="shortcut icon" href="/icons/site-icon.png" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/details.css" />
+</head>
+<body>
+  <nav id="navbar">
+    <a href="/" class="brand">STREAMIO</a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/catalog">Catalog</a></li>
+      <li><a href="/search">Search</a></li>
+      <li><a href="/providers">Providers</a></li>
+      <li><a href="/account">Account</a></li>
+    </ul>
+  </nav>
+
+  <div id="backdropSection">
+    <div class="empty-state">
+      <h2>Loading...</h2>
+      <p>Fetching show details</p>
+    </div>
+  </div>
+
+  <div class="details-panel" id="detailsPanel" style="display:none;">
+    <div>
+      <a href="/catalog" class="back-link">← Back to Catalog</a>
+      <div id="detailsMeta"></div>
+    </div>
+  </div>
+
+  <div id="castSection" style="display:none;">
+    <div class="detail-section">
+      <h2 class="section-title">Cast</h2>
+      <div class="people-rail" id="castRail"></div>
+    </div>
+  </div>
+
+  <div id="seasonsSection" style="display:none;">
+    <div class="detail-section">
+      <h2 class="section-title">Stagioni</h2>
+      <div class="season-list" id="seasonList"></div>
+    </div>
+  </div>
+
+  <div id="recommendationsSection" style="display:none;">
+    <div class="recommendations-section">
+      <h2 class="section-title">Raccomandati</h2>
+      <div class="rec-grid" id="recGrid"></div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV (mobile) -->
+  <div class="bottom-nav" aria-label="Mobile navigation" role="navigation">
+    <a href="/" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+    <a href="/catalog" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Catalog
+    </a>
+    <a href="/search" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Search
+    </a>
+    <a href="/providers" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      Providers
+    </a>
+    <a href="/account" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Account
+    </a>
+  </div>
+
+
+  <!-- Aggiungi in <head>, prima degli script esistenti -->
+  <script src="/scripts/details.js" type="module"></script>
+</body>
+</html>

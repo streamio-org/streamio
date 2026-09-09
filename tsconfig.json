@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2020", "DOM"],
+    "rootDir": "./",
+    "outDir": "./dist",
+    "baseUrl": ".",
+  },
+  "include": ["./**/*"],
+  "exclude": [
+    "./dist",
+    "./node_modules",
+    "./login-checker",
+    "./power-controller",
+    "./updater",
+    "./redirect"
+  ]
+}

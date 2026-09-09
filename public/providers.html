@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Streamio - Providers</title>
+  <link rel="shortcut icon" href="/icons/site-icon.png" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/providers.css" />
+</head>
+<body>
+  <nav>
+    <a href="/" class="brand">STREAMIO</a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/catalog">Catalog</a></li>
+      <li><a href="/search">Search</a></li>
+      <li><a href="/providers" class="active">Providers</a></li>
+      <li><a href="/rooms">Rooms</a></li>
+      <li><a href="/account">Account</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-wrap">
+    <div class="page-hero">
+      <h1>Providers</h1>
+      <p>Switch your active streaming source</p>
+    </div>
+
+    <div class="providers-wrap">
+      <div id="activeBanner" style="display:none" class="active-banner">
+        <div class="active-dot"></div>
+        <div class="active-banner-text">
+          <strong id="activeName">—</strong>
+          <span>Currently active provider</span>
+        </div>
+      </div>
+
+      <div class="section-label">Available providers</div>
+      <div class="provider-list" id="providerList">
+        <p class="empty">Loading providers…</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- BOTTOM NAV (mobile) -->
+  <div class="bottom-nav" aria-label="Mobile navigation" role="navigation">
+    <a href="/" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+    <a href="/catalog" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Catalog
+    </a>
+    <a href="/search" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Search
+    </a>
+    <a href="/providers" class="bottom-nav-item active">
+      <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      Providers
+    </a>
+    <a href="/account" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Account
+    </a>
+  </div>
+
+  <script src="/scripts/providers.js" type="module"></script>
+</body>
+</html>

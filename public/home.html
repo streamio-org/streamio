@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Streamio - Home</title>
+  <link rel="shortcut icon" href="/icons/site-icon.png" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/home.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="mainNav">
+    <a href="/" class="brand">STREAMIO</a>
+    <ul class="nav-links">
+      <li><a href="/" class="active">Home</a></li>
+      <li><a href="/catalog">Catalog</a></li>
+      <li><a href="/search">Search</a></li>
+      <li><a href="/providers">Providers</a></li>
+      <li><a href="/rooms">Rooms</a></li>
+      <li><a href="/account">Account</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero" id="hero">
+    <div class="hero-bg" id="heroBg">
+      <div class="hero-bg-img" id="heroBgImg"></div>
+    </div>
+    <div class="hero-vignette"></div>
+    <div class="hero-content" id="heroContent">
+      <div class="hero-badge" id="heroBadge">Trending Now</div>
+      <div class="hero-title" id="heroTitle">Loading…</div>
+      <div class="hero-meta" id="heroMeta"></div>
+      <div class="hero-desc" id="heroDesc"></div>
+      <div class="hero-actions" id="heroActions">
+        <div class="skel" style="height:44px;width:120px;border-radius:5px;"></div>
+        <div class="skel" style="height:44px;width:120px;border-radius:5px;"></div>
+      </div>
+    </div>
+    <div class="hero-dots" id="heroDots"></div>
+  </div>
+
+  <!-- PROVIDER BAR -->
+  <!-- One trigger + a popover, not a chip per variant: there are more sources
+       than fit on a line and the flat row wrapped out of the bar's height. -->
+  <div class="provider-bar" id="providerBar">
+    <span class="provider-label">Source</span>
+    <div class="provider-select" id="providerSelect">
+      <button type="button" class="provider-trigger" id="providerTrigger"
+              aria-haspopup="listbox" aria-expanded="false">
+        <span class="provider-trigger-name" id="providerTriggerName">Loading…</span>
+        <span class="provider-trigger-lang" id="providerTriggerLang"></span>
+        <span class="provider-caret" aria-hidden="true">▾</span>
+      </button>
+      <div class="provider-menu" id="providerMenu" role="listbox" hidden></div>
+    </div>
+    <!-- Quick language switch for the selected source; only populated when it
+         exists in more than one language, and hidden otherwise. -->
+    <div id="providerLangChips" style="display:none"></div>
+  </div>
+
+  <!-- ROWS -->
+  <div class="rows" id="rowsContent">
+    <!-- Continue Watching (from history API) -->
+    <div class="row" id="continueRow" style="display:none;">
+      <div class="row-header">
+        <div class="row-left">
+          <div class="row-title">Continue Watching</div>
+        </div>
+        <a href="/account#history" class="row-see-all">See all →</a>
+      </div>
+      <div class="rail-wrap">
+        <button class="rail-btn prev" onclick="scrollRail(this, -3)">‹</button>
+        <div class="rail" id="continueRail"></div>
+        <button class="rail-btn next" onclick="scrollRail(this, 3)">›</button>
+      </div>
+    </div>
+
+    <!-- Dynamic rows from /api/home -->
+    <div id="dynamicRows">
+      <!-- Skeletons while loading -->
+      <div class="row" id="skelRow1">
+        <div class="skel" style="height:22px;width:200px;border-radius:3px;margin-bottom:18px;"></div>
+        <div class="rail">
+        </div>
+      </div>
+      <div class="row" id="skelRow2">
+        <div class="skel" style="height:22px;width:160px;border-radius:3px;margin-bottom:18px;"></div>
+        <div class="rail">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">STREAMIO</div>
+        <div class="footer-tagline">Your unified streaming companion.</div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <a href="/">Home</a>
+          <a href="/catalog">Catalog</a>
+          <a href="/search">Search</a>
+          <a href="/providers">Providers</a>
+          <a href="/account">Account</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Streamio. All rights reserved.</span>
+      <span>Built by Streamio</span>
+    </div>
+  </footer>
+
+  <!-- BOTTOM NAV (mobile) -->
+  <div class="bottom-nav" aria-label="Mobile navigation" role="navigation">
+    <a href="/" class="bottom-nav-item active">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+    <a href="/catalog" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Catalog
+    </a>
+    <a href="/search" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Search
+    </a>
+    <a href="/providers" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      Providers
+    </a>
+    <a href="/account" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Account
+    </a>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast"><span class="toast-dot"></span><span id="toastMsg"></span></div>
+
+  <script src="/scripts/home.js" type="module"></script>
+</body>
+</html>

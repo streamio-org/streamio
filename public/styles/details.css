@@ -1,0 +1,488 @@
+:root {
+    --red: #e50914;
+    --red-dark: #b20710;
+    --bg: #141414;
+    --surface: #1f1f1f;
+    --surface2: #2a2a2a;
+    --text: #ffffff;
+    --muted: #b3b3b3;
+    --muted2: #6b6b6b;
+    --border: rgba(255,255,255,0.1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; height: 68px;
+    background: rgba(20,20,20,0.0);
+    transition: background 0.4s;
+}
+nav.bg { background: rgba(20,20,20,0.97); border-bottom: 1px solid var(--border); }
+.brand { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: var(--red); letter-spacing: 0.04em; cursor: pointer; text-decoration: none; }
+.nav-links { display: flex; gap: 24px; list-style: none; }
+.nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+.nav-links a:hover { color: var(--text); }
+
+/* BACKDROP HERO */
+.backdrop {
+    position: relative;
+    height: 72vh;
+    min-height: 500px;
+    background: var(--surface);
+    background-size: cover;
+    background-position: center top;
+    overflow: hidden;
+}
+.backdrop-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(20,20,20,0.95) 38%, rgba(20,20,20,0.5) 65%, rgba(20,20,20,0.2) 100%),
+                linear-gradient(to top, rgba(20,20,20,1) 0%, transparent 30%);
+}
+.backdrop-content {
+    position: absolute;
+    bottom: 60px;
+    left: 48px;
+    right: 50%;
+    animation: fadeUp 0.7s ease both;
+}
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.badge-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+.badge-red { background: var(--red); color: white; }
+.badge-outline { border: 1px solid var(--muted); color: var(--muted); }
+.badge-rating { background: rgba(245,197,24,0.15); color: #f5c518; border: 1px solid rgba(245,197,24,0.3); }
+
+.detail-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: 0.02em;
+    margin-bottom: 16px;
+}
+.detail-overview {
+    color: var(--muted);
+    line-height: 1.65;
+    font-size: 0.95rem;
+    max-width: 50ch;
+    margin-bottom: 28px;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.cta-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.btn-play {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: white; color: #000;
+    padding: 14px 28px; border-radius: 5px;
+    font-weight: 700; font-size: 1rem;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+}
+.btn-play:hover { background: rgba(255,255,255,0.85); transform: scale(1.02); }
+.btn-more {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(109,109,110,0.7); color: white;
+    padding: 14px 28px; border-radius: 5px;
+    font-weight: 600; font-size: 1rem;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-more:hover { background: rgba(109,109,110,0.5); }
+
+/* DETAILS PANEL */
+.details-panel {
+    padding: 0 48px;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 48px;
+    max-width: 1400px;
+}
+.meta-table {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--surface);
+}
+.meta-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+}
+.meta-row:last-child { border-bottom: none; }
+.meta-key {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    min-width: 90px;
+    padding-top: 2px;
+}
+.meta-val {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+}
+.meta-val .genre-tag {
+    display: inline-block;
+    background: rgba(229,9,20,0.12);
+    color: var(--red);
+    border: 1px solid rgba(229,9,20,0.25);
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin: 2px 3px 2px 0;
+    text-decoration: none;
+}
+a.genre-tag { transition: background 0.18s, border-color 0.18s; }
+a.genre-tag:hover {
+    background: rgba(229,9,20,0.22);
+    border-color: rgba(229,9,20,0.5);
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    padding: 10px 0;
+    transition: color 0.2s;
+    margin-bottom: 24px;
+}
+.back-link:hover { color: var(--text); }
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 20px;
+    color: var(--muted);
+    text-align: center;
+}
+.empty-state h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 0.06em; margin-bottom: 10px; }
+
+@media (max-width: 900px) {
+    nav { padding: 0 20px; }
+    .backdrop {
+        height: auto;
+        min-height: 560px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding-top: 88px;
+    }
+    .backdrop-content { position: relative; left: auto; right: auto; bottom: auto; padding: 0 20px 32px; }
+    .details-panel { grid-template-columns: 1fr; padding: 0 20px 60px; gap: 28px; }
+}
+
+.recommendations-section {
+    padding: 40px 48px 60px;
+}
+.section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.06em;
+    margin-bottom: 20px;
+    color: var(--text);
+}
+.rec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+}
+.rec-card {
+    position: relative;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--surface);
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.rec-card:hover {
+    transform: scale(1.04);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+}
+.rec-card img {
+    width: 100%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    display: block;
+}
+.rec-card-placeholder {
+    width: 100%;
+    aspect-ratio: 2/3;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 2rem;
+}
+.rec-card-info {
+    padding: 10px 10px 12px;
+}
+.rec-card-title {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.rec-card-rating {
+    font-size: 0.72rem;
+    color: #f5c518;
+    margin-top: 4px;
+}
+
+@media (max-width: 900px) {
+    .recommendations-section { padding: 32px 20px 48px; }
+    .rec-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
+}
+
+#backdropImg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    z-index: 0;
+}
+.backdrop-gradient {
+    z-index: 1;
+}
+.backdrop-content {
+    z-index: 2;
+}
+
+/* ── BOTTOM NAV (mobile only) ──────────────────── */
+.bottom-nav {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero-content { padding: 0 20px 48px; }
+    .hero-dots { right: 20px; }
+    .provider-bar { padding: 0 20px; }
+    .rows { padding: 28px 20px 60px; }
+    .stats-bar { padding: 0 20px; }
+    footer { padding: 36px 20px 28px; }
+    .card { flex: 0 0 130px; }
+    .feat-card { flex: 0 0 240px; }
+    .cw-card { flex: 0 0 210px; }
+    .footer-links { gap: 28px; }
+    .footer-top { flex-direction: column; }
+    .stat-val { font-size: 1.5rem; }
+    .hero-title { font-size: 2.8rem; }
+    .rail-btn { display: none; }
+
+    body { padding-bottom: 72px; }
+
+    .bottom-nav {
+        display: flex;
+        position: fixed; bottom: 0; left: 0; right: 0; z-index: 300;
+        background: rgba(20,20,20,0.97);
+        border-top: 1px solid var(--border);
+        padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+        backdrop-filter: blur(12px);
+    }
+    .bottom-nav-item {
+        flex: 1;
+        display: flex; flex-direction: column; align-items: center; gap: 4px;
+        text-decoration: none;
+        color: var(--muted2);
+        font-size: 0.62rem; font-weight: 600;
+        letter-spacing: 0.04em; text-transform: uppercase;
+        padding: 4px 0;
+        transition: color 0.18s;
+    }
+    .bottom-nav-item svg {
+        width: 22px; height: 22px;
+        stroke: currentColor; fill: none;
+        stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .bottom-nav-item.active { color: var(--red); }
+    .bottom-nav-item:hover { color: var(--text); }
+}
+.icon-svg {
+  width: 1em; height: 1em;
+  stroke: currentColor; fill: none;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+  vertical-align: -0.15em;
+  flex-shrink: 0;
+}
+.icon-spin { animation: spin 1s linear infinite; }
+
+/* ── DETTAGLI ESTESI ──────────────────────────── */
+/* Everything below renders `show.details` (core/models/ShowDetails.ts). A
+   provider that publishes none of it leaves these sections hidden, so nothing
+   here may reserve space when empty. */
+
+.badge-soft {
+    background: rgba(255,255,255,0.09);
+    color: var(--muted);
+    border: 1px solid var(--border);
+}
+.badge-age {
+    background: rgba(229,9,20,0.14);
+    color: #ff6b73;
+    border: 1px solid rgba(229,9,20,0.35);
+}
+
+.detail-subtitle {
+    color: var(--muted2);
+    font-size: 0.95rem;
+    font-style: italic;
+    margin: -8px 0 16px;
+    max-width: 50ch;
+}
+
+.tag-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.keyword-tag,
+.stat-chip,
+.ext-tag {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 3px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--muted);
+}
+.stat-chip b { color: var(--text); font-weight: 700; }
+.ext-tag {
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.18s, background 0.18s;
+}
+.ext-tag:hover { border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.08); }
+
+.detail-section { padding: 40px 48px 0; }
+
+/* CAST */
+.people-rail {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+    scrollbar-width: thin;
+}
+.person-card {
+    flex: 0 0 108px;
+    text-align: center;
+}
+.person-avatar {
+    width: 108px;
+    height: 108px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    color: var(--muted2);
+    margin-bottom: 10px;
+}
+.person-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.person-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+.person-role {
+    font-size: 0.68rem;
+    color: var(--muted2);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 3px;
+}
+
+/* STAGIONI */
+.season-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+}
+.season-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+}
+.season-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+}
+.season-meta {
+    font-size: 0.76rem;
+    color: var(--muted2);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+.season-overview {
+    margin-top: 10px;
+    font-size: 0.84rem;
+    color: var(--muted);
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.rec-card-sub {
+    font-size: 0.7rem;
+    color: var(--muted2);
+    margin-top: 3px;
+}
+
+@media (max-width: 900px) {
+    .detail-section { padding: 28px 20px 0; }
+    .season-list { grid-template-columns: 1fr; }
+}

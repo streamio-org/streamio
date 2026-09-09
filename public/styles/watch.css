@@ -1,0 +1,1594 @@
+:root {
+  --red: #e50914;
+  --red-dark: #b20710;
+  --bg: #0a0a0a;
+  --surface: #181818;
+  --surface2: #222;
+  --text: #ffffff;
+  --muted: #b3b3b3;
+  --border: rgba(255, 255, 255, 0.08);
+  --accent: #e50914;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: "DM Sans", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  height: 60px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.9) 0%,
+    transparent 100%
+  );
+  transition: background 0.3s;
+}
+nav.solid {
+  background: rgba(10, 10, 10, 0.98);
+  border-bottom: 1px solid var(--border);
+}
+.brand {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.9rem;
+  color: var(--red);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  text-decoration: none;
+}
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+.back-btn:hover {
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* ── PLAYER ── */
+.player-section {
+  background: #000;
+  display: flex;
+  justify-content: center;
+  padding-top: 60px;
+}
+
+.player-container {
+  position: relative;
+  aspect-ratio: 16/9;
+  max-height: 80vh;
+  width: 100%; /* ← occupa tutta la larghezza */
+  max-width: 100%;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.player-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: var(--muted);
+  background: #000;
+  z-index: 2;
+}
+.player-placeholder .spinner {
+  width: 42px;
+  height: 42px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.player-placeholder p {
+  font-size: 0.9rem;
+}
+
+#videoPlayer {
+  width: 100%;
+  height: 100%;
+  display: none;
+  background: #000;
+  position: absolute;
+  inset: 0;
+}
+
+/* ── PLAYER CONTROLS ── */
+.player-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.88) 0%,
+    rgba(0, 0, 0, 0.4) 60%,
+    transparent 100%
+  );
+  padding: 48px 20px 18px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 10;
+  pointer-events: none;
+}
+.player-container.show-controls .player-controls {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.progress-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+  transition: height 0.15s;
+  touch-action: none; /* a drag on the bar scrubs; it must not scroll the page */
+}
+.progress-bar:hover,
+.progress-bar.scrubbing {
+  height: 6px;
+}
+/* How much is downloaded ahead of the playhead — sits under the fill. */
+.progress-buffered {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0%;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  pointer-events: none;
+}
+.progress-fill {
+  position: relative;
+  height: 100%;
+  background: var(--red);
+  border-radius: 2px;
+  width: 0%;
+  pointer-events: none;
+}
+.progress-handle {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--red);
+  transform: translate(50%, -50%) scale(0);
+  transition: transform 0.15s;
+}
+.progress-bar:hover .progress-handle,
+.progress-bar.scrubbing .progress-handle {
+  transform: translate(50%, -50%) scale(1);
+}
+.progress-tooltip {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  transform: translateX(-50%);
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.85);
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s;
+}
+.progress-tooltip.show {
+  opacity: 1;
+}
+.time-display {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  min-width: 90px;
+  text-align: right;
+}
+
+.controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.controls-left,
+.controls-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pbtn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition:
+    color 0.15s,
+    background 0.15s;
+}
+.pbtn:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.12);
+}
+.pbtn svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
+/* ── ON-SCREEN FEEDBACK (keyboard seeks, volume, speed) ──
+   Sits over the video, above the controls gradient. Toggled with a class and
+   not [hidden], since its own rule sets display: flex. */
+.player-osd {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.92);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 15;
+  transition:
+    opacity 0.18s,
+    transform 0.18s;
+}
+.player-osd.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+.player-osd-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+/* ── THEATER MODE ──
+   The player takes the viewport; everything else keeps its layout and simply
+   starts below the fold. */
+body.theater .player-container {
+  max-height: calc(100vh - 60px);
+  height: calc(100vh - 60px);
+}
+body.theater .content-area {
+  padding-top: 40px;
+}
+#theaterBtn.active {
+  color: var(--red);
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.volume-slider {
+  width: 72px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  cursor: pointer;
+  accent-color: var(--red);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+}
+
+/* AFTER */
+.dropdown {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  overflow: hidden;
+  min-width: 130px;
+  z-index: 20;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+.dropdown.show {
+  display: block;
+}
+
+/* ── MORE MENU (quality/subtitles/download/shortcuts, grouped) ── */
+.more-menu {
+  position: relative;
+}
+.more-dropdown {
+  min-width: 230px;
+  max-height: min(60vh, 420px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 6px 0;
+}
+.more-section {
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.more-section:last-child {
+  border-bottom: none;
+}
+.more-section-title {
+  padding: 8px 14px 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.more-section-list {
+  display: flex;
+  flex-direction: column;
+}
+.more-section-list.speed-row {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px 10px 2px;
+}
+/* Scoped through .speed-row so these beat `.dropdown-btn { width: 100% }`,
+   which is defined further down and would otherwise put one chip per line. */
+.speed-row .speed-chip {
+  display: inline-flex;
+  align-items: center;
+  width: auto;
+  padding: 5px 9px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.78rem;
+}
+.speed-row .speed-chip.active {
+  background: rgba(229, 9, 20, 0.18);
+}
+.dropdown-btn {
+  display: block;
+  width: 100%;
+  /* .icon-svg sits on the text baseline, so an icon-prefixed row (the
+     keyboard shortcuts entry) lines up without its own layout mode. */
+  padding: 9px 14px;
+  background: none;
+  border: none;
+  color: var(--text);
+  text-align: left;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.dropdown-btn:hover {
+  background: rgba(229, 9, 20, 0.12);
+  color: var(--red);
+}
+.dropdown-btn.active {
+  color: var(--red);
+  font-weight: 700;
+}
+
+/* ── DOWNLOAD TOAST ── */
+.download-toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #1f1f1f;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 20px;
+  min-width: 260px;
+  z-index: 1000;
+  display: none;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+}
+.download-toast.show {
+  display: block;
+}
+.download-toast-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.toast-close {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0;
+}
+.download-bar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.download-bar-fill {
+  height: 100%;
+  background: var(--red);
+  width: 0%;
+  transition: width 0.3s;
+}
+.download-status {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 6px;
+}
+
+/* ── SHORTCUTS MODAL ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 900;
+  display: none;
+}
+.modal-overlay.show {
+  display: block;
+}
+.shortcuts-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 28px;
+  z-index: 1000;
+  display: none;
+  width: min(520px, 90vw);
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.8);
+}
+.shortcuts-modal.show {
+  display: block;
+}
+.shortcuts-modal h3 {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.06em;
+  color: var(--red);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.shortcuts-close {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1.3rem;
+}
+.shortcuts-close:hover {
+  color: white;
+}
+.shortcuts-group + .shortcuts-group {
+  margin-top: 22px;
+}
+.shortcuts-group h4 {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.shortcuts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.shortcut-item {
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+}
+.shortcut-keys {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.shortcut-sep {
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+.shortcut-label {
+  color: rgba(255, 255, 255, 0.85);
+}
+.key {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 3px 8px;
+  border-radius: 4px;
+  /* Not `monospace`: the arrow keys (← ↑ →) render as near-invisible
+     hairlines in the default mono face on most systems. */
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--red);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── CONTENT AREA ── */
+.content-area {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px 32px 80px;
+}
+
+.content-header {
+  margin-bottom: 32px;
+}
+.content-title {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+}
+.content-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+.content-badge {
+  padding: 4px 10px;
+  border-radius: 3px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.cb-red {
+  background: rgba(229, 9, 20, 0.15);
+  color: var(--red);
+  border: 1px solid rgba(229, 9, 20, 0.3);
+}
+.cb-outline {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--muted);
+}
+.cb-yellow {
+  background: rgba(245, 197, 24, 0.1);
+  color: #f5c518;
+  border: 1px solid rgba(245, 197, 24, 0.25);
+}
+
+/* meta strip */
+.meta-strip {
+  display: flex;
+  gap: 2px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+.meta-chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 12px 20px;
+  flex: 1;
+  min-width: 140px;
+}
+.meta-chip:first-child {
+  border-radius: 6px 0 0 6px;
+}
+.meta-chip:last-child {
+  border-radius: 0 6px 6px 0;
+}
+.meta-chip:only-child {
+  border-radius: 6px;
+}
+.mc-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.mc-val {
+  font-weight: 700;
+  font-size: 0.95rem;
+  overflow-wrap: anywhere;
+}
+
+.error-msg {
+  background: rgba(229, 9, 20, 0.1);
+  border: 1px solid rgba(229, 9, 20, 0.3);
+  color: #ff6b6b;
+  padding: 14px 18px;
+  border-radius: 6px;
+  margin-bottom: 24px;
+  font-size: 0.9rem;
+}
+
+/* ── SECTION ── */
+.section {
+  margin-bottom: 36px;
+}
+.section-title {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.25rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.btn-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.epbtn {
+  position: relative;
+  padding: 9px 14px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-family: "DM Sans", sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  overflow: hidden;
+}
+.epbtn:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--text);
+  background: var(--surface2);
+}
+.epbtn.active {
+  background: var(--red);
+  border-color: var(--red);
+  color: white;
+}
+
+/* Fully watched — dimmed with a checkmark, so a finished episode reads as
+   "done" at a glance rather than looking identical to an unwatched one. */
+.epbtn.completed {
+  color: var(--muted);
+  border-color: rgba(70, 211, 105, 0.35);
+  background: rgba(70, 211, 105, 0.08);
+}
+.epbtn.completed .epbtn-label::after {
+  content: "\2713";
+  margin-left: 6px;
+  color: #46d369;
+}
+.epbtn.completed.active {
+  background: var(--red);
+  border-color: var(--red);
+  color: white;
+}
+.epbtn.completed.active .epbtn-label::after {
+  color: white;
+}
+
+/* Started but not finished — thin progress bar along the bottom edge. */
+.epbtn.in-progress {
+  border-color: rgba(229, 9, 20, 0.35);
+}
+.epbtn-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 0;
+  background: var(--red);
+}
+.epbtn.active .epbtn-progress {
+  background: white;
+}
+
+.srvbtn {
+  padding: 10px 18px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-family: "DM Sans", sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.srvbtn:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--text);
+}
+.srvbtn.active {
+  background: white;
+  border-color: white;
+  color: #000;
+}
+
+@media (max-width: 900px) {
+  nav {
+    padding: 0 16px;
+  }
+  .content-area {
+    padding: 20px 16px 60px;
+  }
+  .volume-slider {
+    display: none;
+  }
+  .shortcuts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Narrow screens can't fit every player icon button on one row without
+   squishing them — let the two icon groups scroll horizontally instead of
+   shrinking, and grow the tap targets a bit. */
+@media (max-width: 560px) {
+  .controls-left,
+  .controls-right {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .controls-left::-webkit-scrollbar,
+  .controls-right::-webkit-scrollbar {
+    display: none;
+  }
+  .pbtn {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+  }
+  .pbtn svg {
+    width: 20px;
+    height: 20px;
+  }
+  .room-panel {
+    width: 100vw;
+    right: -100vw;
+  }
+  .room-panel-body {
+    padding: 18px;
+  }
+  .room-btn {
+    padding: 13px 14px;
+    font-size: 0.9rem;
+  }
+  .room-copy-btn {
+    padding: 11px 16px;
+  }
+}
+
+.next-ep-prompt {
+  position: absolute;
+  bottom: 90px;
+  right: 20px;
+  background: rgba(20, 20, 20, 0.95);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: none;
+  align-items: center;
+  gap: 12px;
+  z-index: 15;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+.next-ep-prompt.show {
+  display: flex;
+}
+.next-ep-prompt #nextEpBtn {
+  background: var(--red);
+  color: white;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: "DM Sans", sans-serif;
+}
+.next-ep-prompt #nextEpCancel {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* Same anchor as .next-ep-prompt is intentional: maybeShowSkipSegment()
+   never shows this while the next-episode prompt is up, so they never need
+   to coexist on screen. */
+.skip-segment-prompt {
+  position: absolute;
+  bottom: 90px;
+  right: 20px;
+  background: rgba(20, 20, 20, 0.95);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  display: none;
+  z-index: 15;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+.skip-segment-prompt.show {
+  display: flex;
+}
+.skip-segment-prompt #skipSegmentBtn {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  border: 1px solid var(--border);
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: "DM Sans", sans-serif;
+}
+.skip-segment-prompt #skipSegmentBtn:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* ── ROOM PANEL (watch party) ── */
+#roomBtn.active {
+  color: var(--red);
+}
+.room-panel {
+  position: fixed;
+  top: 0;
+  right: -340px;
+  width: 320px;
+  height: 100vh;
+  background: #141414;
+  border-left: 1px solid var(--border);
+  z-index: 950;
+  display: flex;
+  flex-direction: column;
+  transition: right 0.25s ease;
+  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.6);
+}
+.room-panel.show {
+  right: 0;
+}
+.room-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.05em;
+  color: var(--red);
+}
+.room-panel-close {
+  background: none;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.room-panel-close:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+}
+.room-panel-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+  font-size: 0.88rem;
+}
+.room-code-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+}
+.room-code-row .room-code {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.15em;
+  flex: 1;
+}
+.room-btn {
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.85rem;
+  width: 100%;
+  margin-top: 4px;
+}
+.room-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.room-btn.outline {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.room-btn.danger {
+  background: rgba(229, 9, 20, 0.12);
+  color: var(--red);
+  border: 1px solid rgba(229, 9, 20, 0.35);
+  margin-top: 8px;
+}
+.room-btn.danger:hover {
+  background: rgba(229, 9, 20, 0.22);
+}
+.room-copy-btn {
+  width: auto;
+  margin: 0;
+  padding: 10px 16px;
+  flex-shrink: 0;
+}
+.room-hint {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+.room-members {
+  margin-top: 18px;
+}
+.room-members-title {
+  color: var(--muted);
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+.room-member {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+}
+.room-member-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--red);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.room-member-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.room-member-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.room-member-crown {
+  color: #f5c518;
+  font-size: 0.85rem;
+}
+.room-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  background: #1f1f1f;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 0.82rem;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.room-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── CAST PANEL ──────────────────────────────────────────────────────────
+   Remote control for an active Chromecast session. Mirrors .room-panel so the
+   two slide-ins read as the same component family. */
+.cast-panel {
+  position: fixed;
+  top: 0;
+  right: -360px;
+  width: 340px;
+  height: 100vh;
+  background: #141414;
+  border-left: 1px solid var(--border);
+  z-index: 950;
+  display: flex;
+  flex-direction: column;
+  transition: right 0.25s ease;
+  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.6);
+}
+.cast-panel.show {
+  right: 0;
+}
+.cast-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.05em;
+  color: var(--red);
+}
+.cast-panel-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.cast-now {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.cast-now img {
+  width: 62px;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+.cast-now-title {
+  font-weight: 700;
+  font-size: 0.98rem;
+  line-height: 1.25;
+}
+.cast-now-sub {
+  color: var(--muted);
+  font-size: 0.82rem;
+  margin-top: 5px;
+}
+
+.cast-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.16);
+  overflow: hidden;
+  cursor: pointer;
+}
+.cast-bar #castBarFill {
+  height: 100%;
+  width: 0%;
+  background: var(--red);
+}
+.cast-times {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 7px;
+  font-size: 0.76rem;
+  color: var(--muted);
+}
+
+.cast-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+.cast-ctl {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 40px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.cast-ctl .icon-svg {
+  width: 1.25em;
+  height: 1.25em;
+}
+.cast-ctl:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+.cast-ctl-main {
+  width: 60px;
+  background: var(--red);
+  border-color: transparent;
+}
+.cast-volume-row #castVolume {
+  flex: 1;
+  accent-color: var(--red);
+}
+
+.cast-toggle {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 20px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  cursor: pointer;
+}
+.cast-select {
+  width: 100%;
+  margin-top: 12px;
+  padding: 9px 10px;
+  background: var(--surface2, #2a2a2a);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.82rem;
+}
+
+/* While casting, the local player is paused and frozen — dim it so it doesn't
+   read as "playback is broken". */
+#playerContainer.casting video {
+  opacity: 0.25;
+}
+
+@media (max-width: 640px) {
+  .cast-panel {
+    width: 100vw;
+    right: -100vw;
+  }
+}
+
+.icon-svg {
+  width: 1em; height: 1em;
+  stroke: currentColor; fill: none;
+  stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+  vertical-align: -0.15em;
+  flex-shrink: 0;
+}
+.icon-spin { animation: spin 1s linear infinite; }
+
+/* ── HEADER ESTESO + EPISODI RICCHI ─────────────────────────
+   Everything here renders data the page already fetched and used to discard:
+   the show's `details` bag and the per-episode title/thumbnail/plot. Each
+   block is hidden (not emptied) when its source publishes nothing, so a
+   provider with sparse data gets a compact page rather than blank rows. */
+
+.content-subtitle {
+  color: var(--muted);
+  font-style: italic;
+  font-size: 0.95rem;
+  margin: -6px 0 12px;
+}
+.content-overview {
+  color: var(--muted);
+  line-height: 1.65;
+  font-size: 0.92rem;
+  max-width: 80ch;
+  margin-bottom: 16px;
+}
+.content-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+/* A `display` declaration here outranks the UA's `[hidden] { display: none }`,
+   so every block toggled with `el.hidden` needs its own guard or it stays
+   visible — as an empty bordered box, in the case of `.now-playing`. */
+.content-links[hidden],
+.now-playing[hidden] {
+  display: none;
+}
+.content-link {
+  padding: 5px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition:
+    border-color 0.18s,
+    background 0.18s;
+}
+.content-link:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: var(--surface2);
+}
+
+/* now playing */
+.now-playing {
+  display: flex;
+  gap: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin-bottom: 28px;
+}
+.now-playing-thumb {
+  width: 180px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 5px;
+  flex-shrink: 0;
+  background: var(--surface2);
+}
+.now-playing-body {
+  min-width: 0;
+}
+.now-playing-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--red);
+  font-weight: 700;
+}
+.now-playing-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 4px 0 6px;
+}
+.now-playing-badges {
+  font-size: 0.76rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.now-playing-badges:empty {
+  display: none;
+}
+.now-playing-overview {
+  margin-top: 10px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.now-playing-overview:empty {
+  display: none;
+}
+
+/* episode cards — still `.epbtn`, so selection/progress/autoplay keep working */
+.episode-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 10px;
+}
+.epcard {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  text-align: left;
+  padding: 10px;
+  width: 100%;
+}
+.epcard-thumb {
+  width: 132px;
+  aspect-ratio: 16 / 9;
+  flex-shrink: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.6rem;
+  color: var(--muted);
+}
+.epcard-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.epcard-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.epcard .epbtn-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.epcard.active .epbtn-label {
+  color: rgba(255, 255, 255, 0.85);
+}
+.epcard-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.epcard.active .epcard-title {
+  color: white;
+}
+.epcard-badges {
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted2, var(--muted));
+}
+.epcard-overview {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.epcard.active .epcard-overview,
+.epcard.active .epcard-badges {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+@media (max-width: 700px) {
+  .episode-list {
+    grid-template-columns: 1fr;
+  }
+  .now-playing {
+    flex-direction: column;
+  }
+  .now-playing-thumb {
+    width: 100%;
+  }
+  .epcard-thumb {
+    width: 108px;
+  }
+}
+
+/* ── NAVIGAZIONE EPISODI ─────────────────────────────────────
+   One Piece is 1100+ episodes. The grid renders one season/block at a time,
+   can be filtered, and drops to a dense number grid — the rich cards stay a
+   toggle away, and the selected episode's full detail is always in the
+   now-playing panel above. */
+
+.episode-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.episode-nav[hidden] {
+  display: none;
+}
+.episode-seasons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+.episode-seasons:empty {
+  display: none;
+}
+.season-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.season-tab:hover {
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.season-tab.active {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+}
+.season-tab-count {
+  font-size: 0.7rem;
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
+.episode-tools {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+.episode-filter {
+  width: 200px;
+  max-width: 45vw;
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.83rem;
+}
+.episode-filter::placeholder {
+  color: var(--muted);
+}
+.episode-filter:focus {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+.episode-density {
+  padding: 8px 14px;
+  border-radius: 5px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.episode-density:hover {
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.episode-empty {
+  color: var(--muted);
+  font-size: 0.88rem;
+  padding: 8px 0;
+}
+
+/* compact density: the number alone, many per row */
+.episode-list.compact {
+  grid-template-columns: repeat(auto-fill, minmax(62px, 1fr));
+  gap: 6px;
+}
+.epchip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 11px 6px;
+  font-variant-numeric: tabular-nums;
+}
+.epchip .epbtn-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  color: inherit;
+}
+
+@media (max-width: 700px) {
+  .episode-tools {
+    width: 100%;
+    margin-left: 0;
+  }
+  .episode-filter {
+    flex: 1;
+    max-width: none;
+  }
+  .episode-list.compact {
+    grid-template-columns: repeat(auto-fill, minmax(54px, 1fr));
+  }
+}

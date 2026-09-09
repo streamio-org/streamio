@@ -1,0 +1,86 @@
+<!-- public/verify-email.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verify Email - Streamio</title>
+  <link rel="shortcut icon" href="/icons/site-icon.png" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/auth-pages.css" />
+</head>
+<body>
+
+  <div class="bg-canvas"></div>
+  <div class="bg-grid"></div>
+
+  <nav><a href="/" class="brand">STREAMIO</a></nav>
+
+  <main>
+    <div class="auth-card">
+
+      <!-- Auto-verifying a token from the URL -->
+      <div class="panel" id="panelVerifying">
+        <h1 class="auth-heading">Verifying</h1>
+        <div class="verifying">
+          <div class="spin"></div>
+          <p>Checking your verification link…</p>
+        </div>
+      </div>
+
+      <!-- Verified -->
+      <div class="panel panel-centered" id="panelSuccess">
+        <div class="status-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+        </div>
+        <h1 class="auth-heading">Email verified</h1>
+        <p class="auth-sub">Your account is ready. Time to watch something.</p>
+        <a class="btn-submit" href="/login">Go to sign in</a>
+        <p class="redirect-note" id="redirectNote"></p>
+      </div>
+
+      <!-- Manual entry. The link in the email points at whatever public URL the
+           server had when it was sent, and behind the Cloudflare tunnel that host
+           changes on every restart — so a dead link is expected, not exceptional.
+           Pasting the code from the same email works from the current URL. -->
+      <div class="panel" id="panelManual">
+        <h1 class="auth-heading">Verify your email</h1>
+        <p class="auth-sub" id="manualSub">Paste the code from your verification email.</p>
+
+        <div class="error-msg" id="manualError"></div>
+        <div class="success-msg" id="manualSuccess"></div>
+
+        <form id="manualForm">
+          <div class="field">
+            <label class="field-label" for="token">Verification code</label>
+            <input class="field-input code-input" id="token" type="text"
+                   placeholder="Paste your code here" required
+                   autocomplete="off" spellcheck="false" autocapitalize="off" />
+          </div>
+          <button class="btn-submit" type="submit" id="manualSubmit">Verify</button>
+        </form>
+
+        <div class="divider">didn't get the email?</div>
+
+        <form id="resendForm">
+          <div class="field">
+            <label class="field-label" for="email">Email address</label>
+            <input class="field-input" id="email" type="email"
+                   placeholder="your@email.com" required autocomplete="email" />
+          </div>
+          <button class="btn-ghost" type="submit" id="resendSubmit">Send a new link</button>
+        </form>
+
+        <div class="auth-footer"><a href="/login">← Back to sign in</a></div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="/scripts/verify-email.js" type="module"></script>
+</body>
+</html>

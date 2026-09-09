@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account - Streamio</title>
+  <link rel="shortcut icon" href="/icons/site-icon.png" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/account.css" />
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="/" class="brand">STREAMIO</a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/catalog">Catalog</a></li>
+      <li><a href="/search">Search</a></li>
+      <li><a href="/providers">Providers</a></li>
+      <li><a href="/rooms">Rooms</a></li>
+      <li><a href="#" id="logoutLink" style="color:var(--red);">Sign Out</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="account-hero" id="accountHero">
+    <div class="avatar-wrap">
+      <div class="avatar" id="avatarEl">
+        <span id="avatarInitial">?</span>
+      </div>
+      <div class="avatar-edit" title="Change avatar">✎</div>
+    </div>
+    <div class="hero-info">
+      <div class="hero-label">Your Account</div>
+      <h1 class="hero-name" id="heroName">Loading…</h1>
+      <div class="hero-email" id="heroEmail"></div>
+      <div class="hero-badges">
+        <span class="hbadge hbadge-green" id="verifiedBadge" style="display:none">✓ Verified</span>
+        <span class="hbadge hbadge-gray" id="memberSince"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB BAR -->
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="watchlist">
+      <span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-fill" viewBox="0 0 16 16">
+          <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2"/>
+        </svg>
+      </span> Watchlist
+      <span class="tab-count" id="wlCount">0</span>
+    </button>
+    <button class="tab-btn" data-tab="favorites">
+      <span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
+        </svg>
+      </span> Favorites
+      <span class="tab-count" id="fvCount">0</span>
+    </button>
+    <button class="tab-btn" data-tab="history">
+      <span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock-history" viewBox="0 0 16 16">
+          <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022zm2.004.45a7 7 0 0 0-.985-.299l.219-.976q.576.129 1.126.342zm1.37.71a7 7 0 0 0-.439-.27l.493-.87a8 8 0 0 1 .979.654l-.615.789a7 7 0 0 0-.418-.302zm1.834 1.79a7 7 0 0 0-.653-.796l.724-.69q.406.429.747.91zm.744 1.352a7 7 0 0 0-.214-.468l.893-.45a8 8 0 0 1 .45 1.088l-.95.313a7 7 0 0 0-.179-.483m.53 2.507a7 7 0 0 0-.1-1.025l.985-.17q.1.58.116 1.17zm-.131 1.538q.05-.254.081-.51l.993.123a8 8 0 0 1-.23 1.155l-.964-.267q.069-.247.12-.501m-.952 2.379q.276-.436.486-.908l.914.405q-.24.54-.555 1.038zm-.964 1.205q.183-.183.35-.378l.758.653a8 8 0 0 1-.401.432z"/>
+          <path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0z"/>
+          <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5"/>
+        </svg>
+      </span> History
+    </button>
+    <button class="tab-btn" data-tab="stats">
+      <span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trophy-fill" viewBox="0 0 16 16">
+          <path d="M2.5.5A.5.5 0 0 1 3 0h10a.5.5 0 0 1 .5.5q0 .807-.034 1.536a3 3 0 1 1-1.133 5.89c-.79 1.865-1.878 2.777-2.833 3.011v2.173l1.425.356c.194.048.377.135.537.255L13.3 15.1a.5.5 0 0 1-.3.9H3a.5.5 0 0 1-.3-.9l1.838-1.379c.16-.12.343-.207.537-.255L6.5 13.11v-2.173c-.955-.234-2.043-1.146-2.833-3.012a3 3 0 1 1-1.133-5.89A33 33 0 0 1 2.5.5m.099 2.54a2 2 0 0 0 .72 3.935c-.006-.111-.01-.224-.012-.338A33 33 0 0 1 2.599 3.04m10.804 0a33 33 0 0 1-.707 3.597c-.002.114-.006.227-.012.338a2 2 0 0 0 .72-3.935Z"/>
+        </svg>
+      </span> Stats
+      <span class="tab-count" id="badgeCount">0</span>
+    </button>
+    <button class="tab-btn" data-tab="profile">
+      <span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+          <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+        </svg>
+      </span> Profile
+    </button>
+    <button class="tab-btn" data-tab="preferences">
+      <span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear-wide-connected" viewBox="0 0 16 16">
+          <path d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5m0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78zM5.048 3.967l-.087.065zm-.431.355A4.98 4.98 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8zm.344 7.646.087.065z"/>
+        </svg>
+      </span> Preferences
+    </button>
+    <button class="tab-btn" data-tab="social">
+      <span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+          <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a2 2 0 1 0 0-4 2 2 0 0 0 0 4m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
+        </svg>
+      </span> Social
+    </button>
+    <button class="tab-btn" data-tab="admin" id="adminTabBtn" style="display:none;">
+      <span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-hdd-network-fill" viewBox="0 0 16 16">
+          <path d="M4.5 5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1zM3 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5z"/>
+          <path d="M0 3.5C0 2.673.673 2 1.5 2h13c.827 0 1.5.673 1.5 1.5v6c0 .674-.447 1.244-1.06 1.43.328.68.36 1.746.36 2.57a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5c0-.845-.111-1.72-.617-2h-9.366c-.506.28-.617 1.155-.617 2a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5c0-.824.032-1.89.36-2.57A1.5 1.5 0 0 1 0 9.5zM1.5 3a.5.5 0 0 0-.5.5v6a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-6a.5.5 0 0 0-.5-.5z"/>
+        </svg>
+      </span> Admin
+    </button>
+  </div>
+
+  <!-- BODY -->
+  <div class="page-body">
+
+    <!-- ── PROFILE TAB ── -->
+    <!-- ── STATS TAB ── -->
+    <div class="tab-panel" id="panel-stats">
+      <div class="section-head">
+        <div>
+          <div class="section-title">Your Stats</div>
+          <div class="section-sub" id="statsSubtitle">Loading…</div>
+        </div>
+      </div>
+
+      <div class="stat-grid" id="statGrid"></div>
+
+      <div class="section-head" style="margin-top:32px;">
+        <div>
+          <div class="section-title">Badges</div>
+          <div class="section-sub" id="badgesSubtitle">Earn badges by watching, rating and sharing</div>
+        </div>
+        <label class="badge-filter">
+          <input type="checkbox" id="badgeEarnedOnly" /> Earned only
+        </label>
+      </div>
+
+      <div id="badgeContent"></div>
+    </div>
+
+    <div class="tab-panel" id="panel-profile">
+      <div class="section-head">
+        <div>
+          <div class="section-title">Profile Settings</div>
+          <div class="section-sub">Manage your display name and avatar</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Display Information</div>
+        <div class="form-grid">
+          <div class="field">
+            <label class="field-label">Display Name</label>
+            <input class="field-input" id="displayName" type="text" placeholder="How you appear to others" />
+          </div>
+          <div class="field">
+            <label class="field-label">Email</label>
+            <input class="field-input" id="emailField" type="email" placeholder="your@email.com" disabled style="opacity:0.5;cursor:not-allowed;" />
+            <span class="field-hint">Email cannot be changed here.</span>
+          </div>
+          <div class="field" style="grid-column:1/-1;">
+            <label class="field-label">Avatar URL</label>
+            <input class="field-input" id="avatarUrl" type="url" placeholder="https://example.com/avatar.jpg" />
+            <span class="field-hint">Paste a direct link to an image (JPG, PNG, WebP).</span>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" id="saveProfileBtn">Save Changes</button>
+          <button class="btn btn-ghost" id="cancelProfileBtn">Discard</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Password & Security</div>
+        <div class="form-grid">
+          <div class="field">
+            <label class="field-label">Current Password</label>
+            <input class="field-input" id="currentPw" type="password" placeholder="••••••••" />
+          </div>
+          <div style="display:none;" id="pwSpacer"></div>
+          <div class="field">
+            <label class="field-label">New Password</label>
+            <input class="field-input" id="newPw" type="password" placeholder="Min. 8 characters" />
+          </div>
+          <div class="field">
+            <label class="field-label">Confirm Password</label>
+            <input class="field-input" id="confirmPw" type="password" placeholder="Repeat new password" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" id="changePwBtn">Update Password</button>
+        </div>
+      </div>
+
+      <div class="danger-card">
+        <div class="danger-title">Danger Zone</div>
+        <div class="danger-desc">Permanently delete your account and all associated data. This cannot be undone.</div>
+        <button class="btn btn-danger" id="deleteAccountBtn">Delete Account</button>
+      </div>
+    </div>
+
+    <!-- ── FAVORITES TAB ── -->
+    <div class="tab-panel" id="panel-favorites">
+      <div class="section-head">
+        <div>
+          <div class="section-title">My Favorites</div>
+          <div class="section-sub" id="fvSubtitle">Loading…</div>
+        </div>
+        <a href="/catalog" class="btn btn-secondary btn-sm">+ Add Shows</a>
+      </div>
+      <div class="filter-bar" id="fvFilterBar">
+        <input class="field-input fvFilter" id="fvSearch" type="text" placeholder="Search by title…" />
+        <select class="field-input fvFilter" id="fvProviderFilter">
+          <option value="">All providers</option>
+        </select>
+        <select class="field-input fvFilter" id="fvRatingFilter">
+          <option value="">Any rating</option>
+          <option value="9">9+</option>
+          <option value="7">7+</option>
+          <option value="5">5+</option>
+          <option value="3">3+</option>
+        </select>
+        <button class="btn btn-secondary btn-sm" id="fvFilterBtn">Apply</button>
+        <button class="btn btn-ghost btn-sm" id="fvFilterClearBtn">Clear</button>
+      </div>
+      <div id="favoritesContent">
+        <div class="empty">
+          <div class="spinner" style="margin:0 auto 16px;"></div>
+          <div style="color:var(--muted2);font-size:0.85rem;">Loading favorites…</div>
+        </div>
+      </div>
+      <div class="load-more" id="fvLoadMoreWrap" style="display:none;">
+        <button class="btn btn-secondary" id="fvLoadMoreBtn">Load More</button>
+      </div>
+      <div class="scroll-sentinel" id="fvSentinel"></div>
+    </div>
+
+    <!-- ── WATCHLIST TAB ── -->
+    <div class="tab-panel active" id="panel-watchlist">
+      <div class="section-head">
+        <div>
+          <div class="section-title">My Watchlist</div>
+          <div class="section-sub" id="wlSubtitle">Loading…</div>
+        </div>
+        <a href="/catalog" class="btn btn-secondary btn-sm">+ Add Shows</a>
+      </div>
+      <div class="filter-bar" id="wlFilterBar">
+        <input class="field-input wlFilter" id="wlSearch" type="text" placeholder="Search by title…" />
+        <select class="field-input wlFilter" id="wlProviderFilter">
+          <option value="">All providers</option>
+        </select>
+        <select class="field-input wlFilter" id="wlRatingFilter">
+          <option value="">Any rating</option>
+          <option value="9">9+</option>
+          <option value="7">7+</option>
+          <option value="5">5+</option>
+          <option value="3">3+</option>
+        </select>
+        <button class="btn btn-secondary btn-sm" id="wlFilterBtn">Apply</button>
+        <button class="btn btn-ghost btn-sm" id="wlFilterClearBtn">Clear</button>
+      </div>
+      <div id="watchlistContent">
+        <div class="empty">
+          <div class="spinner" style="margin:0 auto 16px;"></div>
+          <div style="color:var(--muted2);font-size:0.85rem;">Loading watchlist…</div>
+        </div>
+      </div>
+      <div class="load-more" id="wlLoadMoreWrap" style="display:none;">
+        <button class="btn btn-secondary" id="wlLoadMoreBtn">Load More</button>
+      </div>
+      <div class="scroll-sentinel" id="wlSentinel"></div>
+    </div>
+
+    <!-- ── HISTORY TAB ── -->
+    <div class="tab-panel" id="panel-history">
+      <div class="section-head">
+        <div>
+          <div class="section-title">Watch History</div>
+          <div class="section-sub">Recently watched shows and episodes</div>
+        </div>
+        <button class="btn btn-ghost btn-sm" id="clearHistoryBtn">Clear All</button>
+      </div>
+      <div class="filter-bar" id="histFilterBar">
+        <input class="field-input histFilter" id="histSearch" type="text" placeholder="Search by title…" />
+        <select class="field-input histFilter" id="histProviderFilter">
+          <option value="">All providers</option>
+        </select>
+        <select class="field-input histFilter" id="histStatusFilter">
+          <option value="">Any status</option>
+          <option value="true">Completed</option>
+          <option value="false">In progress</option>
+        </select>
+        <input class="field-input histFilter" id="histDateFrom" type="date" />
+        <input class="field-input histFilter" id="histDateTo" type="date" />
+        <button class="btn btn-secondary btn-sm" id="histFilterBtn">Apply</button>
+        <button class="btn btn-ghost btn-sm" id="histFilterClearBtn">Clear</button>
+      </div>
+      <div id="historyContent">
+        <div class="empty">
+          <div class="spinner" style="margin:0 auto 16px;"></div>
+          <div style="color:var(--muted2);font-size:0.85rem;">Loading history…</div>
+        </div>
+      </div>
+      <div class="load-more" id="loadMoreWrap" style="display:none;">
+        <button class="btn btn-secondary" id="loadMoreBtn">Load More</button>
+      </div>
+      <div class="scroll-sentinel" id="histSentinel"></div>
+    </div>
+
+    <!-- ── PREFERENCES TAB ── -->
+    <div class="tab-panel" id="panel-preferences">
+      <div class="section-head">
+        <div>
+          <div class="section-title">Preferences</div>
+          <div class="section-sub">Customize your Streamio experience</div>
+        </div>
+        <button class="btn btn-secondary btn-sm" id="addPrefBtn">+ Add Custom</button>
+      </div>
+      <div id="prefsContent">
+        <div class="empty">
+          <div class="spinner" style="margin:0 auto 16px;"></div>
+          <div style="color:var(--muted2);font-size:0.85rem;">Loading preferences…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SOCIAL TAB ── -->
+    <div class="tab-panel" id="panel-social">
+      <div class="section-head">
+        <div>
+          <div class="section-title">Social</div>
+          <div class="section-sub">Follow people and manage shared content</div>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <button class="btn btn-secondary btn-sm social-subtab active" data-subtab="people">People</button>
+        <button class="btn btn-ghost btn-sm social-subtab" data-subtab="shares">Shares</button>
+      </div>
+
+      <div id="social-people">
+        <div class="card">
+          <div class="card-title">Find People</div>
+          <input class="field-input" id="peopleSearchInput" type="text" placeholder="Search by display name…" />
+          <div id="peopleSearchResults" class="people-list"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Followers (<span id="followersCount">0</span>)</div>
+          <div id="followersList" class="people-list">
+            <div class="empty"><div style="color:var(--muted2);font-size:0.85rem;">Loading…</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Following (<span id="followingCount">0</span>)</div>
+          <div id="followingList" class="people-list">
+            <div class="empty"><div style="color:var(--muted2);font-size:0.85rem;">Loading…</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="social-shares" style="display:none;">
+        <div class="filter-bar">
+          <button class="btn btn-secondary btn-sm share-subtab active" data-sharetab="inbox">Inbox</button>
+          <button class="btn btn-ghost btn-sm share-subtab" data-sharetab="sent">Sent</button>
+        </div>
+        <div id="sharesContent">
+          <div class="empty"><div style="color:var(--muted2);font-size:0.85rem;">Loading…</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ADMIN TAB ── -->
+    <div class="tab-panel" id="panel-admin">
+      <div class="section-head">
+        <div>
+          <div class="section-title">Server Settings</div>
+          <div class="section-sub">Sync this server's library data with other Streamio hosting points</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Version</div>
+        <div class="section-sub" style="margin-bottom:12px;">
+          The exact build this server is running.
+        </div>
+        <div id="versionInfoContent">
+          <div style="color:var(--muted2);font-size:0.85rem;">Loading version…</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Providers</div>
+        <div class="section-sub" style="margin-bottom:12px;">
+          Enable/disable individual content sources and clear their cached responses.
+        </div>
+        <div class="form-actions">
+          <a class="btn btn-secondary btn-sm" href="/admin/providers">Manage Providers</a>
+          <a class="btn btn-secondary btn-sm" href="/admin/local-provider">My Library</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Updates</div>
+        <div class="section-sub" style="margin-bottom:12px;">
+          Installs new releases published to the configured GitHub repository. The server can't
+          rebuild itself — the host-side <strong>updater</strong> process does the work, so it must
+          be running for an install to actually happen.
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label class="field-label">Status</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+              <input type="checkbox" id="updateEnabledToggle" />
+              <span id="updateEnabledLabel" style="font-size:0.9rem;">Disabled</span>
+            </label>
+          </div>
+          <div class="field">
+            <label class="field-label">Repository (owner/name)</label>
+            <input class="field-input" id="updateRepoInput" type="text" placeholder="streamio-org/streamio-website" />
+          </div>
+          <div class="field">
+            <label class="field-label">Install automatically</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+              <input type="checkbox" id="updateAutoApplyToggle" />
+              <span id="updateAutoApplyLabel" style="font-size:0.9rem;">Off — ask first</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" id="saveUpdateSettingsBtn">Save</button>
+        </div>
+
+        <div id="updateStatusBox" style="margin-top:16px;padding:14px;border-radius:10px;background:var(--card2,rgba(255,255,255,0.03));">
+          <div id="updateStatusDesc" style="font-size:0.9rem;">Loading update status…</div>
+          <div class="form-actions" style="margin-top:12px;">
+            <button class="btn btn-secondary btn-sm" id="checkUpdateBtn">Check for Updates</button>
+            <button class="btn btn-primary btn-sm" id="installUpdateBtn" style="display:none;">Install Update</button>
+            <button class="btn btn-ghost btn-sm" id="cancelUpdateBtn" style="display:none;">Cancel Pending Update</button>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;">
+          <div class="field-label" style="margin-bottom:8px;">Recent updates</div>
+          <div id="updateHistoryContent">
+            <div style="color:var(--muted2);font-size:0.85rem;">Loading…</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">App Version Policy</div>
+        <div class="section-sub" style="margin-bottom:12px;">
+          What the mobile app is told when it checks in. Leave enforcement off to only
+          <em>suggest</em> updating; turn it on to block app builds older than the minimum.
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label class="field-label">Latest app version</label>
+            <input class="field-input" id="clientLatestInput" type="text" placeholder="1.0.0" />
+          </div>
+          <div class="field">
+            <label class="field-label">Minimum supported</label>
+            <input class="field-input" id="clientMinInput" type="text" placeholder="1.0.0" />
+          </div>
+          <div class="field">
+            <label class="field-label">Download URL</label>
+            <input class="field-input" id="clientDownloadInput" type="text" placeholder="https://…" />
+          </div>
+          <div class="field">
+            <label class="field-label">Message (optional)</label>
+            <input class="field-input" id="clientNotesInput" type="text" placeholder="What's new / why update" />
+          </div>
+        </div>
+        <div class="field" style="margin-top:12px;">
+          <label class="field-label">Host the build on this server</label>
+          <div style="font-size:0.82rem;color:var(--muted2);margin-bottom:8px;" id="clientApkStatus">
+            Loading…
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <input type="file" id="clientApkInput" accept=".apk" style="max-width:280px;" />
+            <button class="btn btn-secondary btn-sm" id="uploadApkBtn">Upload APK</button>
+          </div>
+          <div style="font-size:0.78rem;color:var(--muted2);margin-top:6px;">
+            Uploading replaces the previously hosted build and fills in Download URL above with a
+            link to this server. Up to 300MB.
+          </div>
+        </div>
+        <div class="field" style="margin-top:12px;">
+          <label class="field-label">Block outdated apps</label>
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+            <input type="checkbox" id="clientEnforceToggle" />
+            <span id="clientEnforceLabel" style="font-size:0.9rem;">Off — only suggest updating</span>
+          </label>
+        </div>
+        <div id="clientEnforceWarning" style="display:none;margin-top:10px;padding:10px 12px;border-radius:8px;background:rgba(229,9,20,0.12);color:var(--red);font-size:0.82rem;">
+          Every app build below the minimum stops working immediately. Make sure the new build is
+          actually downloadable first.
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" id="saveClientVersionBtn">Save</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Sync</div>
+        <div class="form-grid">
+          <div class="field">
+            <label class="field-label">Status</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+              <input type="checkbox" id="syncEnabledToggle" />
+              <span id="syncEnabledLabel" style="font-size:0.9rem;">Disabled</span>
+            </label>
+          </div>
+          <div class="field">
+            <label class="field-label">Interval (minutes)</label>
+            <input class="field-input" id="syncIntervalInput" type="number" min="1" step="1" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" id="saveSyncBtn">Save</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Hosting Points</div>
+        <div class="section-sub" style="margin-bottom:12px;">
+          Each hosting point must have the same shared secret configured on both this server and the peer.
+        </div>
+        <div id="hostingPointsContent">
+          <div class="empty">
+            <div class="spinner" style="margin:0 auto 16px;"></div>
+            <div style="color:var(--muted2);font-size:0.85rem;">Loading hosting points…</div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-secondary btn-sm" id="addHostingPointBtn">+ Add Hosting Point</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Auto-Shutdown</div>
+        <div class="section-sub" style="margin-bottom:12px;">
+          Automatically power off the server after it's been idle (no requests) for a while. A
+          manual/admin shutdown below always works regardless of this setting.
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label class="field-label">Status</label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+              <input type="checkbox" id="powerEnabledToggle" />
+              <span id="powerEnabledLabel" style="font-size:0.9rem;">Disabled</span>
+            </label>
+          </div>
+          <div class="field">
+            <label class="field-label">Idle minutes</label>
+            <input class="field-input" id="powerIdleMinutesInput" type="number" min="0" step="1" />
+          </div>
+          <div class="field">
+            <label class="field-label">Min uptime minutes</label>
+            <input class="field-input" id="powerMinUptimeInput" type="number" min="0" step="1" />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-primary" id="savePowerSettingsBtn">Save</button>
+        </div>
+      </div>
+
+      <div class="danger-card">
+        <div class="danger-title">Power</div>
+        <div class="danger-desc" id="powerStatusDesc">Loading power status…</div>
+        <div class="form-actions">
+          <button class="btn btn-danger" id="shutdownServerBtn">Shut Down Server</button>
+          <button class="btn btn-ghost" id="cancelPendingShutdownBtn" style="display:none;">Cancel Pending Shutdown</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page-body -->
+
+  <!-- TOAST -->
+  <div id="toast"><span class="toast-dot"></span><span id="toastMsg"></span></div>
+
+  <!-- DELETE ACCOUNT MODAL -->
+  <div class="modal-backdrop" id="deleteModal">
+    <div class="modal">
+      <div class="modal-title" style="color:var(--red);">Delete Account?</div>
+      <div class="modal-desc">This will permanently delete your account, watchlist, and history. Type <strong>DELETE</strong> to confirm.</div>
+      <div class="field">
+        <input class="field-input" id="deleteConfirmInput" type="text" placeholder="Type DELETE to confirm" />
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="cancelDeleteBtn">Cancel</button>
+        <button class="btn btn-danger" id="confirmDeleteBtn" disabled>Delete Forever</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHUTDOWN SERVER MODAL -->
+  <div class="modal-backdrop" id="shutdownModal">
+    <div class="modal">
+      <div class="modal-title" style="color:var(--red);">Shut Down Server?</div>
+      <div class="modal-desc">This will power off the physical machine running this Streamio server for everyone. It can only be turned back on via Wake-on-LAN. Type <strong>SHUTDOWN</strong> to confirm.</div>
+      <div class="field">
+        <input class="field-input" id="shutdownConfirmInput" type="text" placeholder="Type SHUTDOWN to confirm" />
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="cancelShutdownModalBtn">Cancel</button>
+        <button class="btn btn-danger" id="confirmShutdownBtn" disabled>Shut Down Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSTALL UPDATE MODAL -->
+  <div class="modal-backdrop" id="updateModal">
+    <div class="modal">
+      <div class="modal-title">Install Update?</div>
+      <div class="modal-desc" id="updateModalDesc"></div>
+      <div class="modal-desc" style="margin-top:8px;">
+        The new version is built before anything stops, so the server keeps running during the
+        slow part. It will then restart — anyone watching right now will be interrupted for a
+        moment.
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="cancelUpdateModalBtn">Cancel</button>
+        <button class="btn btn-primary" id="confirmUpdateBtn">Install Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PREF EDIT MODAL -->
+  <div class="modal-backdrop" id="prefModal">
+    <div class="modal">
+      <div class="modal-title" id="prefModalTitle">Add Preference</div>
+      <div class="modal-desc">Preferences are stored as key-value pairs.</div>
+      <div class="form-grid full" style="gap:12px;">
+        <div class="field">
+          <label class="field-label">Key</label>
+          <input class="field-input" id="prefKeyInput" type="text" placeholder="e.g. autoplay" />
+        </div>
+        <div class="field">
+          <label class="field-label">Value</label>
+          <input class="field-input" id="prefValInput" type="text" placeholder='e.g. true or "en"' />
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="cancelPrefBtn">Cancel</button>
+        <button class="btn btn-primary" id="savePrefBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOSTING POINT MODAL -->
+  <div class="modal-backdrop" id="hostingPointModal">
+    <div class="modal">
+      <div class="modal-title" id="hpModalTitle">Add Hosting Point</div>
+      <div class="modal-desc" id="hpModalDesc">Register another Streamio server to sync library data with.</div>
+      <div class="form-grid full" style="gap:12px;">
+        <div class="field">
+          <label class="field-label">Name</label>
+          <input class="field-input" id="hpNameInput" type="text" placeholder="e.g. Home Server" />
+        </div>
+        <div class="field">
+          <label class="field-label">URL</label>
+          <input class="field-input" id="hpUrlInput" type="url" placeholder="https://peer.example.com" />
+        </div>
+        <div class="field">
+          <label class="field-label">Shared Secret</label>
+          <input class="field-input" id="hpSecretInput" type="text" placeholder="Leave blank to auto-generate" />
+          <span class="field-hint">Must match the secret configured for this server on the peer's side.</span>
+        </div>
+        <div class="field" id="hpEnabledField" style="display:none;">
+          <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+            <input type="checkbox" id="hpEnabledInput" checked />
+            <span class="field-label" style="margin:0;">Enabled</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="cancelHpBtn">Cancel</button>
+        <button class="btn btn-primary" id="saveHpBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOSTING POINT SECRET REVEAL MODAL -->
+  <div class="modal-backdrop" id="hpSecretModal">
+    <div class="modal">
+      <div class="modal-title">Shared Secret</div>
+      <div class="modal-desc">Copy this now — it will not be shown again. Paste it into the matching hosting-point entry on the peer server.</div>
+      <div class="field">
+        <input class="field-input" id="hpSecretRevealInput" type="text" readonly />
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="copyHpSecretBtn">Copy</button>
+        <button class="btn btn-primary" id="closeHpSecretBtn">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV (mobile) -->
+  <div class="bottom-nav" aria-label="Mobile navigation" role="navigation">
+    <a href="/" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+    <a href="/catalog" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Catalog
+    </a>
+    <a href="/search" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Search
+    </a>
+    <a href="/providers" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      Providers
+    </a>
+    <button type="button" id="bottomNavAccount" class="bottom-nav-item active">
+      <svg class="icon-account" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <svg class="icon-logout" viewBox="0 0 24 24" style="display:none"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      <span id="bottomNavAccountLabel">Account</span>
+    </button>
+  </div>
+
+
+  <script src="/scripts/account.js" type="module"></script>
+</body>
+</html>

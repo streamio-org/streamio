@@ -1,0 +1,65 @@
+{
+  "name": "streamio-v2",
+  "version": "1.15.0",
+  "description": "Self-hosted streaming platform for your own media library.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/streamio-org/streamio-website.git"
+  },
+  "scripts": {
+    "prebuild": "rm -rf dist",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "watch": "tsc --watch",
+    "dev": "nodemon dist/index.js",
+    "stop": "pkill -f 'node dist/index.js'",
+    "test:providers": "npm run build && node tests/providers.test.mjs",
+    "test:genres": "npm run build && node tests/genres.test.mjs",
+    "test:device-login": "npm run build && node tests/device-login.test.mjs",
+    "test:ssrf": "npm run build && node tests/ssrf.test.mjs",
+    "release": "bash scripts/release.sh"
+  },
+  "keywords": [
+    "streaming",
+    "self-hosted",
+    "media-server",
+    "docker",
+    "typescript"
+  ],
+  "author": "",
+  "license": "CC-BY-NC-SA-4.0",
+  "type": "module",
+  "devDependencies": {
+    "@swc/cli": "^0.8.1",
+    "@swc/core": "^1.15.33",
+    "@types/express": "^5.0.6",
+    "@types/hls.js": "^0.13.3",
+    "@types/multer": "^2.2.0",
+    "@types/node": "^25.6.0",
+    "@types/nodemailer": "^8.0.1",
+    "nodemon": "^3.1.14",
+    "ts-node-dev": "^2.0.0",
+    "tsc-alias": "^1.8.17",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "@types/ws": "^8.18.1",
+    "axios": "^1.18.1",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "hls.js": "^1.6.16",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.2.0",
+    "node-fetch": "^3.3.2",
+    "nodemailer": "^9.0.5",
+    "pg": "^8.21.0",
+    "redis": "^6.0.0",
+    "resend": "^6.14.0",
+    "theintrodb": "^3.2.0",
+    "undici": "^7.29.0",
+    "ws": "^8.21.1"
+  }
+}

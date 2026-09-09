@@ -1,0 +1,19 @@
+[Unit]
+Description=Streamio updater
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+# Must run as the user that OWNS the checkout in REPO_DIR. Running as root
+# makes git refuse with "detected dubious ownership", and any file it did
+# manage to write would end up root-owned in that user's tree. This user also
+# needs to be in the `docker` group to rebuild the stack.
+User=enrico
+WorkingDirectory=/mnt/Film/new-streamio/web/updater
+ExecStart=/usr/bin/node dist/index.js
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

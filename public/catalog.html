@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Streamio - Catalog</title>
+  <link rel="shortcut icon" href="/icons/site-icon.png" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/catalog.css" />
+</head>
+<body>
+  <nav>
+    <a href="/" class="brand">STREAMIO</a>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/catalog" class="active">Catalog</a></li>
+      <li><a href="/search">Search</a></li>
+      <li><a href="/providers">Providers</a></li>
+      <li><a href="/rooms">Rooms</a></li>
+      <li><a href="/account">Account</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-wrap">
+    <div class="page-hero">
+      <h1>Catalog</h1>
+      <p>Browse content from your active streaming provider</p>
+    </div>
+
+    <!-- In Evidenza carousel — visibile solo se l'API restituisce una categoria "in evidenza" -->
+    <div class="featured-section" id="featuredSection" style="display:none">
+      <div class="featured-label">In evidenza</div>
+      <div class="featured-header">
+        <h2 id="featuredTitle">Da non perdere</h2>
+      </div>
+      <div class="carousel-wrap">
+        <button class="carousel-btn prev" onclick="scrollCarousel(-3)">&#8249;</button>
+        <div class="carousel" id="featuredCarousel"></div>
+        <button class="carousel-btn next" onclick="scrollCarousel(3)">&#8250;</button>
+      </div>
+    </div>
+
+    <!-- Categorie restanti come griglia -->
+    <div class="catalog" id="catalogContent">
+      <div style="margin-bottom:52px">
+        <div style="width:220px;height:28px;background:var(--surface);border-radius:3px;margin-bottom:20px;animation:pulse 1.5s infinite;"></div>
+        <div class="loading-grid">
+          <div class="skeleton"><div class="skeleton-poster"></div><div class="skeleton-body"></div></div>
+          <div class="skeleton"><div class="skeleton-poster"></div><div class="skeleton-body"></div></div>
+          <div class="skeleton"><div class="skeleton-poster"></div><div class="skeleton-body"></div></div>
+          <div class="skeleton"><div class="skeleton-poster"></div><div class="skeleton-body"></div></div>
+          <div class="skeleton"><div class="skeleton-poster"></div><div class="skeleton-body"></div></div>
+          <div class="skeleton"><div class="skeleton-poster"></div><div class="skeleton-body"></div></div>
+          <div class="skeleton"><div class="skeleton-poster"></div><div class="skeleton-body"></div></div>
+          <div class="skeleton"><div class="skeleton-poster"></div><div class="skeleton-body"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV (mobile) -->
+  <div class="bottom-nav" aria-label="Mobile navigation" role="navigation">
+    <a href="/" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </a>
+    <a href="/catalog" class="bottom-nav-item active">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Catalog
+    </a>
+    <a href="/search" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Search
+    </a>
+    <a href="/providers" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      Providers
+    </a>
+    <a href="/account" class="bottom-nav-item">
+      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Account
+    </a>
+  </div>
+
+
+  <script src="/scripts/catalog.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Watch Parties - Streamio</title>
+    <link rel="shortcut icon" href="/icons/site-icon.png" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles/rooms.css" />
+  </head>
+  <body>
+    <nav>
+      <a href="/" class="brand">STREAMIO</a>
+      <ul class="nav-links">
+        <li><a href="/">Home</a></li>
+        <li><a href="/catalog">Catalog</a></li>
+        <li><a href="/search">Search</a></li>
+        <li><a href="/providers">Providers</a></li>
+        <li><a href="/rooms" style="color:var(--red);">Rooms</a></li>
+        <li><a href="/account">Account</a></li>
+      </ul>
+    </nav>
+
+    <div class="page-body">
+      <div class="page-head">
+        <div class="page-title">Watch Parties</div>
+        <div class="page-sub">
+          Join a friend's room with their code, or open a title and hit "Watch Party" to start one.
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Join with a code</div>
+        <div class="join-row">
+          <input class="field-input" id="codeInput" type="text" maxlength="6" placeholder="ABC123" autocomplete="off" />
+          <button class="btn btn-primary" id="joinBtn">Join</button>
+        </div>
+        <div class="error-text" id="joinError"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">My Watch Parties</div>
+        <div id="myRoomsList" class="room-list">
+          <div class="empty">Loading…</div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/scripts/rooms.js" type="module"></script>
+  </body>
+</html>

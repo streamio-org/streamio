@@ -1,0 +1,14 @@
+[Unit]
+Description=Streamio power-controller
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/mnt/Film/new-streamio/web/power-controller
+ExecStart=/usr/bin/node dist/index.js
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

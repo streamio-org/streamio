@@ -1,0 +1,72 @@
+services:
+  streamio:
+    build:
+      context: .
+      args:
+        # Stamped into the image so /health and /api/version can report the
+        # exact build. Export GIT_SHA=$(git rev-parse --short HEAD) before
+        # building (the updater does); an un-stamped build just reports
+        # "unknown" and still works.
+        GIT_SHA: ${GIT_SHA:-unknown}
+        BUILD_TIME: ${BUILD_TIME:-}
+    container_name: streamio
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - PORT=8080
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/streamio
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    volumes:
+      - uploads:/app/uploads
+    networks:
+      - backend
+
+  db:
+    image: postgres:18
+    container_name: streamio-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: streamio
+
+    volumes:
+      - pgdata:/var/lib/postgresql
+    # No docker-entrypoint-initdb.d mount: the app applies
+    # database/migrations/*.sql itself at boot (see database/migrator.ts), on
+    # every install rather than only on a fresh volume.
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d streamio"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    networks:
+      - backend
+      
+  redis:
+    image: redis:7-alpine
+    container_name: streamio-redis
+    restart: unless-stopped
+    volumes:
+      - redisdata:/data
+    networks:
+      - backend
+
+volumes:
+  pgdata:
+  redisdata:
+  uploads:
+
+networks:
+  backend:
+    driver: bridge

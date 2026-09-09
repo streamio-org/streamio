@@ -1,0 +1,238 @@
+:root {
+    --red: #e50914;
+    --red-dark: #b20710;
+    --bg: #141414;
+    --surface: #1f1f1f;
+    --surface2: #2a2a2a;
+    --text: #ffffff;
+    --muted: #b3b3b3;
+    --muted2: #6b6b6b;
+    --border: rgba(255,255,255,0.1);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; height: 68px;
+    background: rgba(20,20,20,0.97); border-bottom: 1px solid var(--border);
+}
+.brand { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: var(--red); letter-spacing: 0.04em; cursor: pointer; text-decoration: none; }
+.nav-links { display: flex; gap: 24px; list-style: none; }
+.nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--text); }
+
+.page-wrap { padding-top: 68px; }
+
+.page-hero {
+    text-align: center;
+    padding: 52px 48px 36px;
+    background: linear-gradient(to bottom, rgba(229,9,20,0.08) 0%, transparent 100%);
+    border-bottom: 1px solid var(--border);
+}
+.page-hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: 0.04em; margin-bottom: 6px; }
+.page-hero p { color: var(--muted); font-size: 0.95rem; }
+
+.providers-wrap { max-width: 900px; margin: 0 auto; padding: 48px 48px 80px; }
+
+.active-banner {
+    border: 1px solid rgba(229,9,20,0.3);
+    background: rgba(229,9,20,0.06);
+    border-radius: 8px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 40px;
+    animation: fadeUp 0.5s ease both;
+}
+@keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+.active-dot { width: 10px; height: 10px; background: var(--red); border-radius: 50%; box-shadow: 0 0 10px var(--red); flex-shrink: 0; }
+.active-banner-text strong { display: block; margin-bottom: 2px; font-size: 0.95rem; }
+.active-banner-text span { color: var(--muted); font-size: 0.85rem; }
+
+.section-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    margin-bottom: 16px;
+    font-weight: 600;
+}
+
+.provider-list { display: grid; gap: 2px; }
+
+.provider-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    transition: background 0.2s, border-color 0.2s;
+    cursor: pointer;
+    animation: fadeUp 0.4s ease both;
+}
+.provider-card:first-child { border-radius: 8px 8px 4px 4px; }
+.provider-card:last-child { border-radius: 4px 4px 8px 8px; }
+.provider-card:only-child { border-radius: 8px; }
+.provider-card:hover { background: var(--surface2); border-color: rgba(255,255,255,0.2); }
+.provider-card.active { background: rgba(229,9,20,0.05); border-color: rgba(229,9,20,0.35); }
+
+.provider-info { flex: 1; }
+.provider-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.provider-name .active-chip {
+    background: rgba(229,9,20,0.15);
+    color: var(--red);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    border: 1px solid rgba(229,9,20,0.3);
+}
+/* Only ever rendered for providers the server lists once the 18+ preference
+   is on — the badge marks them, it doesn't gate them. */
+.provider-name .adult-chip {
+    background: rgba(255,255,255,0.06);
+    color: var(--muted);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 3px 8px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+}
+.provider-sub { color: var(--muted); font-size: 0.875rem; }
+
+/* Only rendered for a source available in more than one language — the same
+   site behind a locale prefix, which is one provider with a language picker
+   rather than two sources that happen to look alike. */
+.provider-langs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+}
+.lang-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.lang-btn:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+.lang-btn.active {
+    background: rgba(229,9,20,0.15);
+    border-color: rgba(229,9,20,0.4);
+    color: var(--text);
+}
+
+.switch-btn {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 22px;
+    border-radius: 5px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+}
+.switch-btn:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.25); }
+.switch-btn.active {
+    background: var(--red);
+    border-color: var(--red);
+    color: white;
+}
+.switch-btn.active:hover { background: var(--red-dark); border-color: var(--red-dark); }
+
+.toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); padding: 12px 22px; border-radius: 6px;
+    font-size: 0.88rem; font-weight: 500;
+    opacity: 0; transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none; z-index: 999;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.empty { padding: 60px 20px; text-align: center; color: var(--muted); }
+
+@media (max-width: 900px) {
+    nav { padding: 0 20px; }
+    .page-hero { padding: 40px 20px 28px; }
+    .providers-wrap { padding: 32px 20px 60px; }
+    .provider-card { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .switch-btn { width: 100%; text-align: center; }
+}
+
+.bottom-nav {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero-content { padding: 0 20px 48px; }
+    .hero-dots { right: 20px; }
+    .provider-bar { padding: 0 20px; }
+    .rows { padding: 28px 20px 60px; }
+    .stats-bar { padding: 0 20px; }
+    footer { padding: 36px 20px 28px; }
+    .card { flex: 0 0 130px; }
+    .feat-card { flex: 0 0 240px; }
+    .cw-card { flex: 0 0 210px; }
+    .footer-links { gap: 28px; }
+    .footer-top { flex-direction: column; }
+    .stat-val { font-size: 1.5rem; }
+    .hero-title { font-size: 2.8rem; }
+    .rail-btn { display: none; }
+
+    body { padding-bottom: 72px; }
+
+    .bottom-nav {
+        display: flex;
+        position: fixed; bottom: 0; left: 0; right: 0; z-index: 300;
+        background: rgba(20,20,20,0.97);
+        border-top: 1px solid var(--border);
+        padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+        backdrop-filter: blur(12px);
+    }
+    .bottom-nav-item {
+        flex: 1;
+        display: flex; flex-direction: column; align-items: center; gap: 4px;
+        text-decoration: none;
+        color: var(--muted2);
+        font-size: 0.62rem; font-weight: 600;
+        letter-spacing: 0.04em; text-transform: uppercase;
+        padding: 4px 0;
+        transition: color 0.18s;
+    }
+    .bottom-nav-item svg {
+        width: 22px; height: 22px;
+        stroke: currentColor; fill: none;
+        stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .bottom-nav-item.active { color: var(--red); }
+    .bottom-nav-item:hover { color: var(--text); }
+}

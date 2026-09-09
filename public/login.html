@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In - Streamio</title>
+  <link rel="shortcut icon" href="/icons/site-icon.png" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/login.css" />
+</head>
+<body>
+
+  <div class="bg-canvas"></div>
+  <div class="bg-grid"></div>
+
+  <nav><a href="/" class="brand">STREAMIO</a></nav>
+
+  <main>
+    <div class="auth-card">
+      <h1 class="auth-heading" id="authHeading">Welcome back</h1>
+      <p class="auth-sub" id="authSub">Sign in to continue watching.</p>
+
+      <!-- Mode toggle (Login / Register) -->
+      <div class="mode-tabs" id="modeTabs">
+        <button class="mode-tab active" data-mode="login">Sign In</button>
+        <button class="mode-tab" data-mode="register">Create Account</button>
+      </div>
+
+      <!-- OAuth -->
+      <div class="oauth-group" id="oauthGroup">
+        <a href="/api/auth/google" class="oauth-btn">
+          <span class="oauth-icon">
+            <img src="./icons/google.svg" alt="Google">
+          </span> Continue with Google
+        </a>
+        <a href="/api/auth/discord" class="oauth-btn">
+          <span class="oauth-icon">
+            <img src="./icons/discord.svg" alt="Discord" >
+          </span> Continue with Discord
+        </a>
+      </div>
+
+      <div class="divider" id="dividerEl">or continue with email</div>
+
+      <!-- Login form -->
+      <form id="loginForm">
+        <div class="error-msg" id="loginError"></div>
+        <div class="field">
+          <label class="field-label">Email</label>
+          <input class="field-input" id="loginEmail" type="email" placeholder="your@email.com" required autocomplete="email" />
+        </div>
+        <div class="field">
+          <label class="field-label">Password</label>
+          <input class="field-input" id="loginPassword" type="password" placeholder="••••••••" required autocomplete="current-password" />
+        </div>
+        <div class="forgot"><a href="#" id="forgotLink">Forgot password?</a></div>
+        <button class="btn-submit" type="submit" id="loginSubmit">Sign In</button>
+      </form>
+
+      <!-- Register form -->
+      <form id="registerForm" style="display:none;">
+        <div class="error-msg" id="registerError"></div>
+        <div class="field">
+          <label class="field-label">Display Name</label>
+          <input class="field-input" id="regName" type="text" placeholder="How you'll appear" autocomplete="name" />
+        </div>
+        <div class="field">
+          <label class="field-label">Email</label>
+          <input class="field-input" id="regEmail" type="email" placeholder="your@email.com" required autocomplete="email" />
+        </div>
+        <div class="field">
+          <label class="field-label">Password</label>
+          <input class="field-input" id="regPassword" type="password" placeholder="Min. 8 characters" required autocomplete="new-password" />
+        </div>
+        <button class="btn-submit" type="submit" id="registerSubmit">Create Account</button>
+      </form>
+
+      <!-- Reset password form -->
+      <form id="resetForm">
+        <div class="error-msg" id="resetError"></div>
+        <p style="font-size:0.85rem;color:var(--muted);margin-bottom:16px;">Enter your email and we'll send a reset link.</p>
+        <div class="field">
+          <label class="field-label">Email</label>
+          <input class="field-input" id="resetEmail" type="email" placeholder="your@email.com" required />
+        </div>
+        <button class="btn-submit" type="submit" id="resetSubmit">Send Reset Link</button>
+        <p style="text-align:center;margin-top:16px;font-size:0.83rem;">
+          <a href="#" id="backToLogin" style="color:var(--muted);text-decoration:none;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--muted)'">← Back to sign in</a>
+        </p>
+      </form>
+
+      <div class="auth-footer" id="authFooter">
+        Don't have an account? <a href="#" id="switchToRegister">Sign up for free</a>
+      </div>
+    </div>
+  </main>
+
+  <script src="/scripts/login.js" type="module"></script>
+</body>
+</html>

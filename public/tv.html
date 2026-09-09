@@ -1,0 +1,78 @@
+<!-- public/tv.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in a TV - Streamio</title>
+  <link rel="shortcut icon" href="/icons/site-icon.png" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/auth-pages.css" />
+</head>
+<body>
+
+  <div class="bg-canvas"></div>
+  <div class="bg-grid"></div>
+
+  <nav><a href="/" class="brand">STREAMIO</a></nav>
+
+  <main>
+    <div class="auth-card">
+
+      <!-- Confirming the session before anything else, so the code entry is
+           never shown to someone who is about to be bounced to /login. -->
+      <div class="panel active" id="panelLoading">
+        <h1 class="auth-heading">Sign in a TV</h1>
+        <div class="verifying">
+          <div class="spin"></div>
+          <p>Checking your session…</p>
+        </div>
+      </div>
+
+      <div class="panel" id="panelForm">
+        <h1 class="auth-heading">Sign in a TV</h1>
+        <p class="auth-sub">Enter the code shown on your television.</p>
+
+        <div class="error-msg" id="formError"></div>
+
+        <form id="codeForm">
+          <div class="field">
+            <label class="field-label" for="userCode">Code from your TV</label>
+            <input class="field-input code-input" id="userCode" type="text"
+                   placeholder="XXXX-XXXX" required
+                   autocomplete="off" spellcheck="false" autocapitalize="characters" />
+          </div>
+          <button class="btn-submit" type="submit" id="codeSubmit">Sign in my TV</button>
+        </form>
+
+        <!-- The standing risk of any device flow: someone reads you a code and
+             you hand them your account. Every implementation of this warns, and
+             this is the only place a user can catch it. -->
+        <p class="hint">
+          Only continue if you are looking at this code on your own TV. Never
+          enter a code someone sent you or read out to you — it signs
+          <strong>their</strong> device into <strong>your</strong> account.
+        </p>
+
+        <div class="auth-footer"><a href="/account">← Back to your account</a></div>
+      </div>
+
+      <div class="panel panel-centered" id="panelSuccess">
+        <div class="status-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 6 9 17l-5-5" />
+          </svg>
+        </div>
+        <h1 class="auth-heading">Your TV is signed in</h1>
+        <p class="auth-sub" id="successSub">You can put the remote down — the TV will continue on its own.</p>
+        <a class="btn-submit" href="/">Back to Streamio</a>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="/scripts/tv.js" type="module"></script>
+</body>
+</html>
