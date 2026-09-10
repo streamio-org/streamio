@@ -52,7 +52,7 @@
     "express": "^5.2.1",
     "hls.js": "^1.6.16",
     "jsonwebtoken": "^9.0.3",
-    "multer": "^2.2.0",
+    "multer": "^2.3.0",
     "node-fetch": "^3.3.2",
     "nodemailer": "^9.0.5",
     "pg": "^8.21.0",
