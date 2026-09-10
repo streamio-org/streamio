@@ -56,6 +56,19 @@ content. What you upload is what your server serves.
 See [**Features**](docs/features.md) for the deep dive on sync, casting, watch parties, and
 auto-shutdown.
 
+## Screenshots
+
+<div align="center">
+
+<img src="docs/images/homepage.png" alt="Streamio home page" width="100%">
+
+<br><br>
+
+<img src="docs/images/details.png" alt="Streamio details page" width="49%">
+<img src="docs/images/watch.png" alt="Streamio watch page" width="49%">
+
+</div>
+
 ## Quick Start
 
 ```bash
