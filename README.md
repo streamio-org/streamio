@@ -59,7 +59,7 @@ auto-shutdown.
 ## Quick Start
 
 ```bash
-git clone https://github.com/streamio-org/streamio-website.git
+git clone https://github.com/streamio-org/streamio.git
 cd streamio-website
 cp .env.example .env      # fill in the required values — see docs/configuration.md
 docker compose up -d
